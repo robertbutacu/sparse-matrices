@@ -1,4 +1,6 @@
-package data
+package functions
+
+import data.SparseMatrix
 
 trait MatrixReader {
   def readFromFile[F: Fractional](filename: String): SparseMatrix[F]
