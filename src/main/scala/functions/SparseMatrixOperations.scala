@@ -6,3 +6,11 @@ trait SparseMatrixOperations {
   def ***[F: Fractional](A: SparseMatrix[F], B: SparseMatrix[F]): SparseMatrix[F]
   def +++[F: Fractional](A: SparseMatrix[F], B: SparseMatrix[F]): SparseMatrix[F]
 }
+
+object SparseMatrixOperations {
+  def sparseMatrixOperations: SparseMatrixOperations = new SparseMatrixOperations {
+    override def ***[F: Fractional](A: SparseMatrix[F], B: SparseMatrix[F]): SparseMatrix[F] = ???
+
+    override def +++[F: Fractional](A: SparseMatrix[F], B: SparseMatrix[F]): SparseMatrix[F] = ???
+  }
+}
