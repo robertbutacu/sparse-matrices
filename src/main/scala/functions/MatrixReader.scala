@@ -1,6 +1,6 @@
 package functions
 
-import data.{RowValueWithIndex, SparseMatrix}
+import data.{Row, RowValue, RowValueWithIndex, SparseMatrix}
 
 import scala.annotation.tailrec
 import scala.io.Source
@@ -55,11 +55,19 @@ object MatrixReader {
 
     lines.drop(1) // dropping the empty line
 
-    val matrixRows = readMatrix(lines, numberOfLines)
+    val rows = readMatrix(lines, numberOfLines)
 
-    val groupedByRow = matrixRows.groupBy(_.rowIndex).values.toList
+    val groupedByRow = rows.groupBy(_.rowIndex).values.toList
 
-    groupedByRow.sortBy(r => r.head.rowIndex).foreach(println)
+    val preMappedMatrixRows = groupedByRow.sortBy(r => r.head.rowIndex)/*.map{r =>
+      RowValue(r.head.rowIndex, r.map(v => RowValue(v.rowIndex, v.value)))*/
+
+    val mappedMatrixRows = for {
+      row <- preMappedMatrixRows
+      transformedRow = Row(row.head.rowIndex, row.map(v => RowValue(v.columnIndex, v.value)))
+    } yield transformedRow
+
+
 
     SparseMatrix(List.empty)
   }
