@@ -57,8 +57,9 @@ object MatrixReader {
 
     val matrixRows = readMatrix(lines, numberOfLines)
 
-    println(vector)
-    println(matrixRows)
+    val groupedByRow = matrixRows.groupBy(_.rowIndex).values.toList
+
+    groupedByRow.sortBy(r => r.head.rowIndex).foreach(println)
 
     SparseMatrix(List.empty)
   }
