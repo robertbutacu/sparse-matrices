@@ -65,18 +65,24 @@ object MatrixReader {
       row <- preMappedMatrixRows
       transformedRow = Row(row.head.rowIndex, row.map(v => RowValue(v.columnIndex, v.value)))
       noDoubleElements = addSameElements(transformedRow)
-    } yield moveDiagonalElement(transformedRow)
+    } yield moveDiagonalElement(noDoubleElements)
 
     mappedMatrixRows.foreach(println)
 
     SparseMatrix(List.empty)
   }
 
-  def moveDiagonalElement(transformedRow: Row[Double]) = {
-    transformedRow.values.zipWithIndex.find(_._1.value == transformedRow.index) match {
-      case None => transformedRow
+  def moveDiagonalElement(transformedRow: Row[Double]): Row[Double] = {
+    val rowWithIndex = transformedRow.values.zipWithIndex
+    val values = transformedRow.values
+
+    val swappedElements = rowWithIndex.find(_._1.columnIndex == transformedRow.index) match {
+      case None => values
       case Some(v) =>
+        values.slice(0, v._2) ::: values.slice(v._2 + 1, transformedRow.values.length - 2) ::: List(v._1)
     }
+
+    Row(transformedRow.index, swappedElements)
   }
 
   def addSameElements(transformedRow: Row[Double]): Row[Double] = {
