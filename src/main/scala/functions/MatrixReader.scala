@@ -72,13 +72,13 @@ object MatrixReader {
 
   def fillWithEmptyRows(rows: List[Row[Double]]): List[Row[Double]] = {
     rows.foldLeft(List.empty[Row[Double]]) { (acc, curr) =>
-      if (acc.isEmpty && curr.index != 0) {
+      if (acc.isEmpty) {
         val emptyRows = (0 until curr.index).map(r => Row[Double](r)).toList
-        acc ::: emptyRows
+        emptyRows ::: List(curr)
       }
       else {
         val emptyRows = (0 until (curr.index - acc.last.index)).map(r => Row[Double](r + acc.last.index)).toList
-        acc ::: emptyRows
+        acc ::: emptyRows ::: List(curr)
       }
     }
   }
