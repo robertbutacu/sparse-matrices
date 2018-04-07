@@ -1,6 +1,6 @@
 package functions
 
-import data.{RowValue, SparseMatrix}
+import data.{RowValueWithIndex, SparseMatrix}
 
 import scala.annotation.tailrec
 import scala.io.Source
@@ -24,11 +24,11 @@ object MatrixReader {
       }
     }
 
-    def readMatrix(lines: Iterator[String], toParse: Int): List[RowValue[Double]] = {
+    def readMatrix(lines: Iterator[String], toParse: Int): List[RowValueWithIndex[Double]] = {
       @tailrec
       def go(lines: Iterator[String],
              toParse: Int,
-             matrixLines: List[RowValue[Double]]): List[RowValue[Double]] = {
+             matrixLines: List[RowValueWithIndex[Double]]): List[RowValueWithIndex[Double]] = {
         if (toParse == 0)
           matrixLines
         else {
@@ -36,7 +36,7 @@ object MatrixReader {
 
           val rowValues = currLine.toList.head.split(", ")
 
-          val rowValue = RowValue(rowValues(0).toDouble, rowValues(1).toInt, rowValues(2).toInt)
+          val rowValue = RowValueWithIndex(rowValues(0).toDouble, rowValues(1).toInt, rowValues(2).toInt)
 
           go(lines, toParse - 1, matrixLines :+ rowValue)
         }
