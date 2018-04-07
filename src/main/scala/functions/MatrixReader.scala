@@ -51,7 +51,7 @@ object MatrixReader {
 
     lines.drop(1) // dropping the empty line
 
-    val vector = if(isWithVector) readVector(lines, numberOfLines, List.empty) else List.empty
+    val vector = if (isWithVector) readVector(lines, numberOfLines, List.empty) else List.empty
 
     lines.drop(1) // dropping the empty line
 
@@ -67,7 +67,20 @@ object MatrixReader {
       noDoubleElements = addSameElements(transformedRow)
     } yield moveDiagonalElement(noDoubleElements)
 
-    SparseMatrix(mappedMatrixRows)
+    SparseMatrix(fillWithEmptyRows(mappedMatrixRows))
+  }
+
+  def fillWithEmptyRows(rows: List[Row[Double]]): List[Row[Double]] = {
+    rows.foldLeft(List.empty[Row[Double]]) { (acc, curr) =>
+      if (acc.isEmpty && curr.index != 0) {
+        val emptyRows = (0 until curr.index).map(r => Row[Double](r)).toList
+        acc ::: emptyRows
+      }
+      else {
+        val emptyRows = (0 until (curr.index - acc.last.index)).map(r => Row[Double](r + acc.last.index)).toList
+        acc ::: emptyRows
+      }
+    }
   }
 
   def moveDiagonalElement(transformedRow: Row[Double]): Row[Double] = {
@@ -84,7 +97,7 @@ object MatrixReader {
   }
 
   def addSameElements(transformedRow: Row[Double]): Row[Double] = {
-    val noDoubleElements = transformedRow.values.groupBy(_.columnIndex).values.map{v =>
+    val noDoubleElements = transformedRow.values.groupBy(_.columnIndex).values.map { v =>
       RowValue(v.head.columnIndex, v.map(_.value).sum)
     }.toList
 
