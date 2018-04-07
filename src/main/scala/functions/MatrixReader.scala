@@ -67,7 +67,7 @@ object MatrixReader {
       noDoubleElements = addSameElements(transformedRow)
     } yield moveDiagonalElement(noDoubleElements)
 
-    SparseMatrix(fillWithEmptyRows(mappedMatrixRows))
+    SparseMatrix(mappedMatrixRows)
   }
 
   def fillWithEmptyRows(rows: List[Row[Double]]): List[Row[Double]] = {
