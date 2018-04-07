@@ -6,11 +6,11 @@ import scala.annotation.tailrec
 import scala.io.Source
 
 trait MatrixReader[F] {
-  def readFromFile(filename: String): SparseMatrix[F]
+  def readFromFile(filename: String, isWithVector: Boolean): SparseMatrix[F]
 }
 
 object MatrixReader {
-  implicit def sparseMatrixReader: MatrixReader[Double] = (filename: String) => {
+  implicit def sparseMatrixReader: MatrixReader[Double] = (filename: String, isWithVector: Boolean) => {
     @tailrec
     def readVector(lines: Iterator[String],
                    toParse: Int,
@@ -51,7 +51,7 @@ object MatrixReader {
 
     lines.drop(1) // dropping the empty line
 
-    val vector = readVector(lines, numberOfLines, List.empty)
+    val vector = if(isWithVector) readVector(lines, numberOfLines, List.empty) else List.empty
 
     lines.drop(1) // dropping the empty line
 
@@ -59,15 +59,14 @@ object MatrixReader {
 
     val groupedByRow = rows.groupBy(_.rowIndex).values.toList
 
-    val preMappedMatrixRows = groupedByRow.sortBy(r => r.head.rowIndex)/*.map{r =>
-      RowValue(r.head.rowIndex, r.map(v => RowValue(v.rowIndex, v.value)))*/
+    val preMappedMatrixRows = groupedByRow.sortBy(r => r.head.rowIndex)
 
     val mappedMatrixRows = for {
       row <- preMappedMatrixRows
       transformedRow = Row(row.head.rowIndex, row.map(v => RowValue(v.columnIndex, v.value)))
     } yield transformedRow
 
-
+    mappedMatrixRows.foreach(println)
 
     SparseMatrix(List.empty)
   }
