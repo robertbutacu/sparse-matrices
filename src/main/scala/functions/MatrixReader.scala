@@ -1,7 +1,5 @@
 package functions
 
-import java.io.File
-
 import data.{RowValue, SparseMatrix}
 
 import scala.annotation.tailrec
@@ -14,8 +12,10 @@ trait MatrixReader[F] {
 object MatrixReader {
   implicit def sparseMatrixReader: MatrixReader[Double] = (filename: String) => {
     @tailrec
-    def readVector(lines: Iterator[String], toParse: Int, vector: List[Double]): List[Double] = {
-      if(toParse == 0)
+    def readVector(lines: Iterator[String],
+                   toParse: Int,
+                   vector: List[Double]): List[Double] = {
+      if (toParse == 0)
         vector
       else {
         val currLine = lines.take(1).toList.head
@@ -26,7 +26,9 @@ object MatrixReader {
 
     def readMatrix(lines: Iterator[String], toParse: Int): List[RowValue[Double]] = {
       @tailrec
-      def go(lines: Iterator[String], toParse: Int, matrixLines: List[RowValue[Double]]): List[RowValue[Double]] = {
+      def go(lines: Iterator[String],
+             toParse: Int,
+             matrixLines: List[RowValue[Double]]): List[RowValue[Double]] = {
         if (toParse == 0)
           matrixLines
         else {
@@ -47,11 +49,11 @@ object MatrixReader {
 
     val numberOfLines = lines.take(1).toList.head.toInt
 
-    lines.drop(1)// dropping the empty line
+    lines.drop(1) // dropping the empty line
 
     val vector = readVector(lines, numberOfLines, List.empty)
 
-    lines.drop(1)// dropping the empty line
+    lines.drop(1) // dropping the empty line
 
     val matrixRows = readMatrix(lines, numberOfLines)
 
