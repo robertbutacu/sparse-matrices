@@ -77,7 +77,7 @@ object MatrixReader {
         emptyRows ::: List(curr)
       }
       else {
-        val emptyRows = (0 until (curr.index - acc.last.index)).map(r => Row[Double](r + acc.last.index)).toList
+        val emptyRows = (0 until (curr.index - acc.last.index - 1)).map(r => Row[Double](r + acc.last.index + 1)).toList
         acc ::: emptyRows ::: List(curr)
       }
     }
