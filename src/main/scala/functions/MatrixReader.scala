@@ -6,7 +6,7 @@ import scala.annotation.tailrec
 import scala.io.Source
 
 trait MatrixReader[F] {
-  def readFromFile(filename: String, isWithVector: Boolean): SparseMatrix[F]
+  def readFromFile(filename: String, isWithVector: Boolean): MatrixWithVector[F]
 }
 
 object MatrixReader {
@@ -51,7 +51,7 @@ object MatrixReader {
 
     lines.drop(1) // dropping the empty line
 
-    val vector = if (isWithVector) readVector(lines, numberOfLines, List.empty) else List.empty
+    val vector = if (isWithVector) Some(readVector(lines, numberOfLines, List.empty)) else None
 
     lines.drop(1) // dropping the empty line
 
@@ -67,7 +67,7 @@ object MatrixReader {
       noDoubleElements = addSameElements(transformedRow)
     } yield moveDiagonalElement(noDoubleElements)
 
-    SparseMatrix(mappedMatrixRows)
+    MatrixWithVector[Double](SparseMatrix(mappedMatrixRows), vector)
   }
 
   def fillWithEmptyRows(rows: List[Row[Double]]): List[Row[Double]] = {
