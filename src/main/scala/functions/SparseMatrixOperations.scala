@@ -24,11 +24,21 @@ object SparseMatrixOperations {
 
 
       def addMatrices(firstMatrix: RowParser[Double], secondMatrix: RowParser[Double],
-                      currentIterator: ConcurrentRowIterator[Double],
-                      concurrentColumnIterator: ConcurrentColumnIterator[Double],
+                      ci: ConcurrentRowIterator[Double],
+                      cci: ConcurrentColumnIterator[Double],
                       resultRow: List[RowValue[Double]],
                       resultRows: List[List[RowValue[Double]]]): SparseMatrix[Double] = {
-        SparseMatrix(List.empty)
+        (cci.first, cci.second) match {
+          case (RowValue(i, _), RowValue(j, _)) if i == j => {
+           SparseMatrix(List.empty)
+          }
+          case (RowValue(i, _), RowValue(j, _)) if i < j => {
+            SparseMatrix(List.empty)
+          }
+          case (RowValue(i, _), RowValue(j, _)) if i > j => {
+            SparseMatrix(List.empty)
+          }
+        }
       }
 
       val firstMatrixIterator = A.rows.map(r => RowIterator(r.index, r.values.toIterator)).toIterator
