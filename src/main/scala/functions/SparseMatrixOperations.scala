@@ -1,6 +1,6 @@
 package functions
 
-import data.{Row, RowValue, SparseMatrix}
+import data.{RowValue, SparseMatrix}
 
 trait SparseMatrixOperations[T[_], F] {
   def ***(A: T[F], B: T[F]): T[F]
@@ -14,13 +14,10 @@ object SparseMatrixOperations {
 
   case class RowIterator[F: Fractional](index: Int, values: Iterator[RowValue[F]])
 
-  case class ConcurrentRowIterator[F: Fractional](first: Iterator[RowValueWithIndex[F]],
-                                                  second: Iterator[RowValueWithIndex[F]])
+
 
   case class ConcurrentColumnIterator[F: Fractional](first: RowValueWithIndex[F],
                                                      second: RowValueWithIndex[F])
-
-  case class RowValueWithIndex[F](index: Int, value: RowValue[F])
 
   type RowParser[F] = Iterator[RowIterator[F]]
 
@@ -53,12 +50,39 @@ object SparseMatrixOperations {
                 addMatrices(firstMatrix, secondMatrix, cri, nextCCI, updatedCurrentRow, resultRows)
               }
               case (true, false) => {
+
+                val rowsWithFirst = updatedCurrentRow ::: cri.first.map(r => r.value).toList
                 //check if both have next rows
                 val nextRowFirstMatrix = firstMatrix.next
                 val nextRowSecondMatrix = secondMatrix.next
 
-                val nextCCI = null
-                SparseMatrix(List.empty)
+                val nextCRI = ConcurrentRowIterator(nextRowFirstMatrix, nextRowSecondMatrix)
+                val nextCCI = ConcurrentColumnIterator(RowValueWithIndex(nextRowFirstMatrix),
+                  RowValueWithIndex(nextRowSecondMatrix))
+
+                addMatrices(firstMatrix, secondMatrix, nextCRI, nextCCI, List.empty, resultRows :+ rowsWithFirst)
+              }
+              case (false, true) => {
+                val rowsWithFirst = updatedCurrentRow ::: cri.second.map(r => r.value).toList
+                //check if both have next rows
+                val nextRowFirstMatrix = firstMatrix.next
+                val nextRowSecondMatrix = secondMatrix.next
+
+                val nextCRI = ConcurrentRowIterator(nextRowFirstMatrix, nextRowSecondMatrix)
+                val nextCCI = ConcurrentColumnIterator(RowValueWithIndex(nextRowFirstMatrix),
+                  RowValueWithIndex(nextRowSecondMatrix))
+
+                addMatrices(firstMatrix, secondMatrix, nextCRI, nextCCI, List.empty, resultRows :+ rowsWithFirst)
+              }
+              case (false, false) => {
+                val nextRowFirstMatrix = firstMatrix.next
+                val nextRowSecondMatrix = secondMatrix.next
+
+                val nextCRI = ConcurrentRowIterator(nextRowFirstMatrix, nextRowSecondMatrix)
+                val nextCCI = ConcurrentColumnIterator(RowValueWithIndex(nextRowFirstMatrix),
+                  RowValueWithIndex(nextRowSecondMatrix))
+
+                addMatrices(firstMatrix, secondMatrix, nextCRI, nextCCI, List.empty, resultRows :+ updatedCurrentRow)
               }
             }
           }
