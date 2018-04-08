@@ -18,14 +18,19 @@ object SparseMatrixOperations {
     override def ***[F: Fractional](A: SparseMatrix[F], B: SparseMatrix[F]): SparseMatrix[F] = ???
 
     override def +++[F: Fractional](A: SparseMatrix[F], B: SparseMatrix[F]): SparseMatrix[F] = {
-      def addMatrices(firstMatrix: RowParser[F], secondMatrix: RowParser[F], currentIterator: ConcurrentRowIterator[F],
-                      currRow: Int, currColumn: Int): SparseMatrix[F] = {
-        SparseMatrix(List.empty)
-      }
-
-
       val nrOfColumns = Math.max(A.maxByColumn, B.maxByColumn)
       val nrOfRows = Math.max(A.rows.length, B.rows.length)
+
+
+      def addMatrices(firstMatrix: RowParser[F], secondMatrix: RowParser[F], currentIterator: ConcurrentRowIterator[F],
+                      concurrentColumnIterator: ConcurrentColumnIterator[F],
+                      currRow: Int, currColumn: Int): SparseMatrix[F] = {
+        if(currRow == nrOfRows && currColumn == nrOfColumns)
+          SparseMatrix(List.empty)
+        else {
+          SparseMatrix(List.empty)
+        }
+      }
 
       val firstMatrixIterator = A.rows.map(r => RowIterator(r.index, r.values.toIterator)).toIterator
       val secondMatrixIterator = B.rows.map(r =>RowIterator(r.index, r.values.toIterator)).toIterator
@@ -45,7 +50,6 @@ object SparseMatrixOperations {
 
        */
       SparseMatrix(List.empty)
-
     }
   }
 }
