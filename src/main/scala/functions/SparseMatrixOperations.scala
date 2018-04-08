@@ -1,10 +1,11 @@
 package functions
 
-import data.{Row, RowValue, SparseMatrix}
+import data.{RowValue, SparseMatrix}
 
 trait SparseMatrixOperations {
   def ***[F: Fractional](A: SparseMatrix[F], B: SparseMatrix[F]): SparseMatrix[F]
   def +++[F: Fractional](A: SparseMatrix[F], B: SparseMatrix[F]): SparseMatrix[F]
+  def ***[F: Fractional](A: SparseMatrix[F], b: List[F]): SparseMatrix[F]
 }
 
 object SparseMatrixOperations {
@@ -54,5 +55,7 @@ object SparseMatrixOperations {
        */
       SparseMatrix(List.empty)
     }
+
+    override def ***[F: Fractional](A: SparseMatrix[F], b: List[F]): SparseMatrix[F] = ???
   }
 }
