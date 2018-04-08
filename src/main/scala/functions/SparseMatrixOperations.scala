@@ -27,8 +27,16 @@ object SparseMatrixOperations {
       val nrOfColumns = Math.max(A.maxByColumn, B.maxByColumn)
       val nrOfRows = Math.max(A.rows.length, B.rows.length)
 
+      /*def parseNextRow(firstMatrix: RowParser[Double], secondMatrix: RowParser[Double]): Option[ConcurrentRowIterator[Double]] = {
+        (firstMatrix.hasNext, secondMatrix.hasNext) match {
+          case (true, true) =>
+            Some(ConcurrentRowIterator(firstMatrix.next, secondMatrix.next))
+          case (false, true) =>
+            Some(ConcurrentRowIterator(RowIterator(0, Iterator.empty[RowValue[Double]]), secondMatrix.next))
+        }
+      }
 
-      def parseNextValue(firstMatrix: RowParser[Double], secondMatrix: RowParser[Double],
+      def parseNextRowValue(firstMatrix: RowParser[Double], secondMatrix: RowParser[Double],
                          cri: ConcurrentRowIterator[Double],
                          cci: ConcurrentColumnIterator[Double],
                          resultRow: List[RowValue[Double]],
@@ -40,7 +48,6 @@ object SparseMatrixOperations {
             addMatrices(firstMatrix, secondMatrix, cri, nextCCI, updatedCurrentRow, resultRows)
           }
           case (true, false) => {
-
             val rowsWithFirst = updatedCurrentRow ::: cri.first.map(r => r.value).toList
             //check if both have next rows
             val nextRowFirstMatrix = firstMatrix.next
@@ -77,7 +84,6 @@ object SparseMatrixOperations {
         }
       }
 
-
       def addMatrices(firstMatrix: RowParser[Double], secondMatrix: RowParser[Double],
                       cri: ConcurrentRowIterator[Double],
                       cci: ConcurrentColumnIterator[Double],
@@ -92,14 +98,23 @@ object SparseMatrixOperations {
           //same index, have to be added
           case (RowValueWithIndex(ri, RowValue(ci, x)), RowValueWithIndex(rj, RowValue(cj, y))) if ri == rj && ci == cj => {
             val updatedCurrentRow = resultRow :+ RowValue(ci, x + y)
-            parseNextValue(firstMatrix: RowParser[Double], secondMatrix: RowParser[Double],
+            parseNextRowValue(firstMatrix: RowParser[Double], secondMatrix: RowParser[Double],
               cri: ConcurrentRowIterator[Double],
               cci: ConcurrentColumnIterator[Double],
               resultRow: List[RowValue[Double]],
               resultRows: List[List[RowValue[Double]]], updatedCurrentRow)
           }
           case (RowValueWithIndex(ri, RowValue(ci, x)), RowValueWithIndex(rj, RowValue(cj, y))) if ri == rj && ci < cj => {
-            SparseMatrix(List.empty)
+            val updatedCurrentRow = resultRow :+ RowValue(ci, x)
+
+            if(cri.first.hasNext){
+              val updatedNextCCI = ConcurrentColumnIterator(cri.first.next, cci.second)
+              addMatrices(firstMatrix, secondMatrix, cri, updatedNextCCI, updatedCurrentRow, resultRows)
+            }
+            else {
+              val updatedRow = updatedCurrentRow :+ cri.second.toList.map(r => r.value)
+              addMatrices(firstMatrix, secondMatrix, )
+            }
           }
           case (RowValueWithIndex(ri, RowValue(ci, x)), RowValueWithIndex(rj, RowValue(cj, y))) if ri == rj && ci > cj => {
             SparseMatrix(List.empty)
@@ -115,24 +130,7 @@ object SparseMatrixOperations {
 
       val firstMatrixIterator = A.rows.map(r => RowIterator(r.index, r.values.toIterator)).toIterator
       val secondMatrixIterator = B.rows.map(r => RowIterator(r.index, r.values.toIterator)).toIterator
-
-      //the idea would be the following:
-      /*
-      have a function with the parameters:
-      1. firstMatrixIterator
-      2. secondMatrixIterator
-      3. firstMatrixIterator head buffer
-      4. secondMatrixIterator head buffer
-      5. curr row
-      6. curr column
-
-      The idea would be the following:
-      1. pull a new row when the curr column has run out of elements
-      2. work with concurrentColumnIterator => compare that with currRow and currColumn
-        => whenever the elements match, add them to the result, and pull a new value from the concurrentRowIterator
-      3. now, when the column is done, next row => means replace concurrentRowIterator => FOR BOTH VALUES
-      4. repeat until parsed everything, wrap the result into a matrix
-       */
+    */
       SparseMatrix(List.empty)
     }
 
