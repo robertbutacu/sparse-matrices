@@ -4,14 +4,23 @@ import data.{Row, RowValue, SparseMatrix}
 
 trait SparseMatrixOperations[T[_], F] {
   def ***(A: T[F], B: T[F]): T[F]
+
   def +++(A: T[F], B: T[F]): T[F]
+
   def ***(A: T[F], b: List[F]): T[F]
 }
 
 object SparseMatrixOperations {
+
   case class RowIterator[F: Fractional](index: Int, values: Iterator[RowValue[F]])
-  case class ConcurrentRowIterator[F: Fractional](first: Iterator[RowValue[F]], second: Iterator[RowValue[F]])
-  case class ConcurrentColumnIterator[F: Fractional](first: RowValue[F], second: RowValue[F])
+
+  case class ConcurrentRowIterator[F: Fractional](first: Iterator[RowValueWithIndex[F]],
+                                                  second: Iterator[RowValueWithIndex[F]])
+
+  case class ConcurrentColumnIterator[F: Fractional](first: RowValueWithIndex[F],
+                                                     second: RowValueWithIndex[F])
+
+  case class RowValueWithIndex[F](index: Int, value: RowValue[F])
 
   type RowParser[F] = Iterator[RowIterator[F]]
 
@@ -24,25 +33,52 @@ object SparseMatrixOperations {
 
 
       def addMatrices(firstMatrix: RowParser[Double], secondMatrix: RowParser[Double],
-                      ci: ConcurrentRowIterator[Double],
+                      cri: ConcurrentRowIterator[Double],
                       cci: ConcurrentColumnIterator[Double],
                       resultRow: List[RowValue[Double]],
                       resultRows: List[List[RowValue[Double]]]): SparseMatrix[Double] = {
+        /*in every case, 3 cases emerge:
+          1. both rows still have elements to parse
+          2. first does, but second doesnt
+          3. second does, but first doesnt
+        */
         (cci.first, cci.second) match {
-          case (RowValue(i, _), RowValue(j, _)) if i == j => {
-           SparseMatrix(List.empty)
+          //same index, have to be added
+          case (RowValueWithIndex(ri, RowValue(ci, x)), RowValueWithIndex(rj, RowValue(cj, y))) if ri == rj && ci == cj => {
+            val updatedCurrentRow = resultRow :+ RowValue(ci, x + y)
+
+            (cri.first.hasNext, cri.second.hasNext) match {
+              case (true, true) => {
+                val nextCCI = ConcurrentColumnIterator(cri.first.next, cri.second.next)
+                addMatrices(firstMatrix, secondMatrix, cri, nextCCI, updatedCurrentRow, resultRows)
+              }
+              case (true, false) => {
+                //check if both have next rows
+                val nextRowFirstMatrix = firstMatrix.next
+                val nextRowSecondMatrix = secondMatrix.next
+
+                val nextCCI = null
+                SparseMatrix(List.empty)
+              }
+            }
           }
-          case (RowValue(i, _), RowValue(j, _)) if i < j => {
+          case (RowValueWithIndex(ri, RowValue(ci, x)), RowValueWithIndex(rj, RowValue(cj, y))) if ri == rj && ci < cj => {
             SparseMatrix(List.empty)
           }
-          case (RowValue(i, _), RowValue(j, _)) if i > j => {
+          case (RowValueWithIndex(ri, RowValue(ci, x)), RowValueWithIndex(rj, RowValue(cj, y))) if ri == rj && ci > cj => {
+            SparseMatrix(List.empty)
+          }
+          case (RowValueWithIndex(ri, RowValue(ci, x)), RowValueWithIndex(rj, RowValue(cj, y))) if ri > rj => {
+            SparseMatrix(List.empty)
+          }
+          case (RowValueWithIndex(ri, RowValue(ci, x)), RowValueWithIndex(rj, RowValue(cj, y))) if ri < rj => {
             SparseMatrix(List.empty)
           }
         }
       }
 
       val firstMatrixIterator = A.rows.map(r => RowIterator(r.index, r.values.toIterator)).toIterator
-      val secondMatrixIterator = B.rows.map(r =>RowIterator(r.index, r.values.toIterator)).toIterator
+      val secondMatrixIterator = B.rows.map(r => RowIterator(r.index, r.values.toIterator)).toIterator
 
       //the idea would be the following:
       /*
