@@ -13,9 +13,9 @@ object SparseMatrixOperations {
   case class ConcurrentRowIterator[F: Fractional](first: Iterator[RowValue[F]], second: Iterator[RowValue[F]])
   case class ConcurrentColumnIterator[F: Fractional](first: RowValue[F], second: RowValue[F])
 
-  type RowParser[F: Fractional] = Iterator[RowIterator[F]]
+  type RowParser[F] = Iterator[RowIterator[F]]
 
-  def sparseMatrixOperations = new SparseMatrixOperations[SparseMatrix[Double], Double] {
+  def sparseMatrixOperations = new SparseMatrixOperations[SparseMatrix, Double] {
     override def ***(A: SparseMatrix[Double], B: SparseMatrix[Double]): SparseMatrix[Double] = ???
 
     override def +++(A: SparseMatrix[Double], B: SparseMatrix[Double]): SparseMatrix[Double] = {

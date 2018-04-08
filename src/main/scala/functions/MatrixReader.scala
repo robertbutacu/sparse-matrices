@@ -65,7 +65,7 @@ object MatrixReader {
       row <- preMappedMatrixRows
       transformedRow = Row(row.head.rowIndex, row.map(v => RowValue(v.columnIndex, v.value)))
       noDoubleElements = addSameElements(transformedRow)
-    } yield moveDiagonalElement(noDoubleElements)
+    } yield noDoubleElements
 
     MatrixWithVector[Double](SparseMatrix(mappedMatrixRows), vector)
   }
