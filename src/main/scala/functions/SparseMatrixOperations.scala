@@ -23,14 +23,12 @@ object SparseMatrixOperations {
       val nrOfRows = Math.max(A.rows.length, B.rows.length)
 
 
-      def addMatrices(firstMatrix: RowParser[Double], secondMatrix: RowParser[Double], currentIterator: ConcurrentRowIterator[Double],
+      def addMatrices(firstMatrix: RowParser[Double], secondMatrix: RowParser[Double],
+                      currentIterator: ConcurrentRowIterator[Double],
                       concurrentColumnIterator: ConcurrentColumnIterator[Double],
-                      currRow: Int, currColumn: Int): SparseMatrix[Double] = {
-        if(currRow == nrOfRows && currColumn == nrOfColumns)
-          SparseMatrix(List.empty)
-        else {
-          SparseMatrix(List.empty)
-        }
+                      resultRow: List[RowValue[Double]],
+                      resultRows: List[List[RowValue[Double]]]): SparseMatrix[Double] = {
+        SparseMatrix(List.empty)
       }
 
       val firstMatrixIterator = A.rows.map(r => RowIterator(r.index, r.values.toIterator)).toIterator
