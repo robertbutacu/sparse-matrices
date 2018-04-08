@@ -47,7 +47,10 @@ object SparseMatrixOperations {
 
       The idea would be the following:
       1. pull a new row when the curr column has run out of elements
-
+      2. work with concurrentColumnIterator => compare that with currRow and currColumn
+        => whenever the elements match, add them to the result, and pull a new value from the concurrentRowIterator
+      3. now, when the column is done, next row => means replace concurrentRowIterator => FOR BOTH VALUES
+      4. repeat until parsed everything, wrap the result into a matrix
        */
       SparseMatrix(List.empty)
     }
