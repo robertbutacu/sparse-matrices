@@ -1,11 +1,11 @@
 package functions
 
-import data.{RowValue, SparseMatrix}
+import data.{Row, RowValue, SparseMatrix}
 
-trait SparseMatrixOperations {
-  def ***[F: Fractional](A: SparseMatrix[F], B: SparseMatrix[F]): SparseMatrix[F]
-  def +++[F: Fractional](A: SparseMatrix[F], B: SparseMatrix[F]): SparseMatrix[F]
-  def ***[F: Fractional](A: SparseMatrix[F], b: List[F]): SparseMatrix[F]
+trait SparseMatrixOperations[T[_], F] {
+  def ***(A: T[F], B: T[F]): T[F]
+  def +++(A: T[F], B: T[F]): T[F]
+  def ***(A: T[F], b: List[F]): T[F]
 }
 
 object SparseMatrixOperations {
@@ -15,17 +15,17 @@ object SparseMatrixOperations {
 
   type RowParser[F: Fractional] = Iterator[RowIterator[F]]
 
-  def sparseMatrixOperations: SparseMatrixOperations = new SparseMatrixOperations {
-    override def ***[F: Fractional](A: SparseMatrix[F], B: SparseMatrix[F]): SparseMatrix[F] = ???
+  def sparseMatrixOperations = new SparseMatrixOperations[SparseMatrix[Double], Double] {
+    override def ***(A: SparseMatrix[Double], B: SparseMatrix[Double]): SparseMatrix[Double] = ???
 
-    override def +++[F: Fractional](A: SparseMatrix[F], B: SparseMatrix[F]): SparseMatrix[F] = {
+    override def +++(A: SparseMatrix[Double], B: SparseMatrix[Double]): SparseMatrix[Double] = {
       val nrOfColumns = Math.max(A.maxByColumn, B.maxByColumn)
       val nrOfRows = Math.max(A.rows.length, B.rows.length)
 
 
-      def addMatrices(firstMatrix: RowParser[F], secondMatrix: RowParser[F], currentIterator: ConcurrentRowIterator[F],
-                      concurrentColumnIterator: ConcurrentColumnIterator[F],
-                      currRow: Int, currColumn: Int): SparseMatrix[F] = {
+      def addMatrices(firstMatrix: RowParser[Double], secondMatrix: RowParser[Double], currentIterator: ConcurrentRowIterator[Double],
+                      concurrentColumnIterator: ConcurrentColumnIterator[Double],
+                      currRow: Int, currColumn: Int): SparseMatrix[Double] = {
         if(currRow == nrOfRows && currColumn == nrOfColumns)
           SparseMatrix(List.empty)
         else {
@@ -56,6 +56,6 @@ object SparseMatrixOperations {
       SparseMatrix(List.empty)
     }
 
-    override def ***[F: Fractional](A: SparseMatrix[F], b: List[F]): SparseMatrix[F] = ???
+    override def ***(A: SparseMatrix[Double], b: List[Double]): SparseMatrix[Double] = ???
   }
 }
