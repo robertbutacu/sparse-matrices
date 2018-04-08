@@ -15,8 +15,8 @@ object SparseMatrixOperations {
       val nrOfColumns = Math.max(A.maxByColumn, B.maxByColumn)
       val nrOfRows = Math.max(A.rows.length, B.rows.length)
 
-      val firstMatrixIterator = A.rows.toIterator
-      val secondMatrixIterator = B.rows.toIterator
+      val firstMatrixIterator = A.rows.map(r => r.values.toIterator).toIterator
+      val secondMatrixIterator = B.rows.map(r => r.values.toIterator).toIterator
 
       //the idea would be the following:
       /*
@@ -27,6 +27,8 @@ object SparseMatrixOperations {
       4. secondMatrixIterator head buffer
       5. curr row
       6. curr column
+
+      The idea would be the following:
        */
       SparseMatrix(List.empty)
 
