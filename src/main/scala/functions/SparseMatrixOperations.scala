@@ -1,6 +1,6 @@
 package functions
 
-import data.{Row, RowValue, SparseMatrix}
+import data.{AdditionResult, Row, RowValue, SparseMatrix}
 
 import scala.annotation.tailrec
 
@@ -60,7 +60,7 @@ object SparseMatrixOperations {
         }
       }
 
-      SparseMatrix(go(A.rows, B.rows, List.empty))
+      SparseMatrix(go(A.rows, B.rows, List.empty), AdditionResult)
     }
 
     override def ***(A: SparseMatrix[Double], b: List[Double]): SparseMatrix[Double] = ???
