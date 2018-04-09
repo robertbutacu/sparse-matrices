@@ -50,15 +50,13 @@ object SparseMatrixOperations {
                     RowValue(el1.columnIndex, implicitly[Fractional[F]].plus(el1.value, el2.value))
                 })
 
-                val newRow = Row(currHeadFirst.index, newElements)
+                val newRow = Row(currHeadFirst.index, newElements.sortBy(_.columnIndex))
                 go(firstMatrixRows.tail, secondMatrixRows.tail, result :+ newRow)
               }
-              case (i, j) if i < j => {
+              case (i, j) if i < j =>
                 go(firstMatrixRows.tail, secondMatrixRows, result :+ firstMatrixRows.head)
-              }
-              case (i, j) if i > j => {
+              case (i, j) if i > j =>
                 go(firstMatrixRows, secondMatrixRows.tail, result :+ secondMatrixRows.head)
-              }
             }
           }
         }
