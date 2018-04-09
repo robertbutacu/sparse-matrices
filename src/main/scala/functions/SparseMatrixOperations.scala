@@ -53,12 +53,18 @@ object SparseMatrixOperations {
                 val newRow = Row(currHeadFirst.index, newElements)
                 go(firstMatrixRows.tail, secondMatrixRows.tail, result :+ newRow)
               }
+              case (i, j) if i < j => {
+                go(firstMatrixRows.tail, secondMatrixRows, result :+ firstMatrixRows.head)
+              }
+              case (i, j) if i > j => {
+                go(firstMatrixRows, secondMatrixRows.tail, result :+ secondMatrixRows.head)
+              }
             }
           }
         }
       }
 
-      SparseMatrix(List.empty)
+      SparseMatrix(go(A.rows, B.rows, List.empty))
     }
 
     override def ***(A: SparseMatrix[Double], b: List[Double]): SparseMatrix[Double] = ???
