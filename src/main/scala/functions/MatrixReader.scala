@@ -24,12 +24,11 @@ object MatrixReader {
       }
     }
 
-    def readMatrix(lines: Iterator[String], toParse: Int): List[RowValueWithIndex[Double]] = {
+    def readMatrix(lines: Iterator[String]): List[RowValueWithIndex[Double]] = {
       @tailrec
       def go(lines: Iterator[String],
-             toParse: Int,
              matrixLines: List[RowValueWithIndex[Double]]): List[RowValueWithIndex[Double]] = {
-        if (toParse == 0)
+        if (!lines.hasNext)
           matrixLines
         else {
           val currLine = lines.take(1)
@@ -38,11 +37,11 @@ object MatrixReader {
 
           val rowValue = RowValueWithIndex(rowValues(0).toDouble, rowValues(1).toInt, rowValues(2).toInt)
 
-          go(lines, toParse - 1, matrixLines :+ rowValue)
+          go(lines, matrixLines :+ rowValue)
         }
       }
 
-      go(lines, toParse, List.empty)
+      go(lines, List.empty)
     }
 
     val lines = Source.fromFile(filename).getLines()
@@ -55,7 +54,7 @@ object MatrixReader {
 
     lines.drop(1) // dropping the empty line
 
-    val rows = readMatrix(lines, numberOfLines)
+    val rows = readMatrix(lines)
 
     val groupedByRow = rows.groupBy(_.rowIndex).values.toList
 
