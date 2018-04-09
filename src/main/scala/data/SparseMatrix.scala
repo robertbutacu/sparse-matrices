@@ -10,7 +10,15 @@ case class SparseMatrix[F: Fractional](rows: List[Row[F]], matrixType: MatrixTyp
       row <- rows
       value <- row.values
     } yield RowValueWithIndex(value.value, row.index, value.columnIndex)
-    List.empty
+
+    val groupedByColumn = allElements.groupBy(_.columnIndex).values.toList
+
+    val mappedToColumns = for {
+      column <- groupedByColumn
+      mappedToColumn = Column(column.head.columnIndex, column.map(c => ColumnValue(c.columnIndex, c.value)))
+    } yield mappedToColumn
+
+    mappedToColumns
   }
 }
 
