@@ -1,6 +1,6 @@
 package functions
 
-import data.{AdditionResult, Row, RowValue, SparseMatrix}
+import data._
 
 import scala.annotation.tailrec
 
@@ -23,7 +23,22 @@ object SparseMatrixOperations {
   type RowParser[F] = Iterator[RowIterator[F]]
 
   def sparseMatrixOperations: SparseMatrixOperations[SparseMatrix, Double] = new SparseMatrixOperations[SparseMatrix, Double] {
-    override def ***(A: SparseMatrix[Double], B: SparseMatrix[Double]): SparseMatrix[Double] = ???
+    override def ***(A: SparseMatrix[Double], B: SparseMatrix[Double]): SparseMatrix[Double] = {
+
+      val columns = B.asColumns
+
+      def go(firstRows: List[Row[Double]],
+             secondColumns: List[Column[Double]],
+             result: List[Row[Double]]): List[Row[Double]] = {
+        if(firstRows.isEmpty)
+          result
+        else {
+          List.empty
+        }
+      }
+
+      SparseMatrix(go(A.rows, B.asColumns, List.empty), MultiplicationResult)
+    }
 
     override def +++(A: SparseMatrix[Double], B: SparseMatrix[Double]): SparseMatrix[Double] = {
       @tailrec
