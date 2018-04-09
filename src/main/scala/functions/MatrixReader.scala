@@ -65,7 +65,8 @@ object MatrixReader {
       row <- preMappedMatrixRows
       transformedRow = Row(row.head.rowIndex, row.map(v => RowValue(v.columnIndex, v.value)))
       noDoubleElements = addSameElements(transformedRow)
-    } yield noDoubleElements
+      sorted = Row(noDoubleElements.index, noDoubleElements.values.sortBy(_.columnIndex))
+    } yield sorted
 
     MatrixWithVector[Double](SparseMatrix(mappedMatrixRows), vector)
   }

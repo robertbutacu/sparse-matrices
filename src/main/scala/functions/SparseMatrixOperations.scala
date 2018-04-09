@@ -17,8 +17,8 @@ object SparseMatrixOperations {
   case class RowIterator[F: Fractional](index: Int, values: Iterator[RowValue[F]])
 
 
-  case class ConcurrentColumnIterator[F: Fractional](first: RowValueWithIndex[F],
-                                                     second: RowValueWithIndex[F])
+  case class ConcurrentColumnIterator[F: Fractional](first: RowValueWithIndex2[F],
+                                                     second: RowValueWithIndex2[F])
 
   type RowParser[F] = Iterator[RowIterator[F]]
 
