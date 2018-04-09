@@ -5,7 +5,11 @@ case class SparseMatrix[F: Fractional](rows: List[Row[F]], matrixType: MatrixTyp
 
   val maxByColumn: Int = rows.maxBy(_.values.length).values.length
 
+  val asColumns: List[Column[F]] = {
+    val allElements = rows.map(r => r.values.map(l => RowValueWithIndex(l.value, r.index, l.columnIndex))).flatten
 
+    List.empty
+  }
 }
 
 object SparseMatrix {
