@@ -34,12 +34,12 @@ object SparseMatrixOperations {
           case (true, true) => result
           case (false, true) => result ::: firstMatrixRows
           case (true, false) => result ::: secondMatrixRows
-          case (false, false) => {
+          case (false, false) =>
             val currHeadFirst = firstMatrixRows.head
             val currHeadSecond = secondMatrixRows.head
 
             (currHeadFirst.index, currHeadSecond.index) match {
-              case (i, j) if i == j => {
+              case (i, j) if i == j =>
                 val groupedElements = (currHeadFirst.values ::: currHeadSecond.values)
                   .groupBy(_.columnIndex)
                   .values
@@ -52,13 +52,11 @@ object SparseMatrixOperations {
 
                 val newRow = Row(currHeadFirst.index, newElements.sortBy(_.columnIndex))
                 go(firstMatrixRows.tail, secondMatrixRows.tail, result :+ newRow)
-              }
               case (i, j) if i < j =>
                 go(firstMatrixRows.tail, secondMatrixRows, result :+ firstMatrixRows.head)
               case (i, j) if i > j =>
                 go(firstMatrixRows, secondMatrixRows.tail, result :+ secondMatrixRows.head)
             }
-          }
         }
       }
 
