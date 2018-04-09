@@ -1,10 +1,10 @@
-import data.{RowValue, SparseMatrix}
-import functions.{MatrixReader, SparseMatrixOperations}
-
+import data.{AdditionResult, RowValue, Simple}
+import functions.MatrixReader.sparseMatrixReader
+import functions.SparseMatrixOperations
 object Main extends App {
-  val a = MatrixReader.sparseMatrixReader.readFromFile("E:\\projects\\sparse-matrices\\resources\\a.txt", isWithVector = true)
-  val b = MatrixReader.sparseMatrixReader.readFromFile("E:\\projects\\sparse-matrices\\resources\\b.txt", isWithVector = true)
-  val aplusb = MatrixReader.sparseMatrixReader.readFromFile("E:\\projects\\sparse-matrices\\resources\\aplusb.txt", isWithVector = true)
+  val a = sparseMatrixReader.readFromFile("E:\\projects\\sparse-matrices\\resources\\a.txt", isWithVector = true, Simple)
+  val b = sparseMatrixReader.readFromFile("E:\\projects\\sparse-matrices\\resources\\b.txt", isWithVector = true, Simple)
+  val aplusb = sparseMatrixReader.readFromFile("E:\\projects\\sparse-matrices\\resources\\aplusb.txt", isWithVector = true, AdditionResult)
 
   val aplusbResult = SparseMatrixOperations.sparseMatrixOperations.+++(a.matrix, b.matrix)
 

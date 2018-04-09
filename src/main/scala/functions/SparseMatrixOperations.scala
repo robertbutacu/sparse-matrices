@@ -22,7 +22,7 @@ object SparseMatrixOperations {
 
   type RowParser[F] = Iterator[RowIterator[F]]
 
-  def sparseMatrixOperations = new SparseMatrixOperations[SparseMatrix, Double] {
+  def sparseMatrixOperations: SparseMatrixOperations[SparseMatrix, Double] = new SparseMatrixOperations[SparseMatrix, Double] {
     override def ***(A: SparseMatrix[Double], B: SparseMatrix[Double]): SparseMatrix[Double] = ???
 
     override def +++(A: SparseMatrix[Double], B: SparseMatrix[Double]): SparseMatrix[Double] = {

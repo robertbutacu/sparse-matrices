@@ -1,16 +1,18 @@
 package functions
 
-import data.{Row, RowValue, RowValueWithIndex, SparseMatrix}
+import data._
 
 import scala.annotation.tailrec
 import scala.io.Source
 
 trait MatrixReader[F] {
-  def readFromFile(filename: String, isWithVector: Boolean): MatrixWithVector[F]
+  def readFromFile(filename: String, isWithVector: Boolean, matrixType: MatrixType): MatrixWithVector[F]
 }
 
 object MatrixReader {
-  implicit def sparseMatrixReader: MatrixReader[Double] = (filename: String, isWithVector: Boolean) => {
+  def sparseMatrixReader: MatrixReader[Double] = (filename: String,
+                                                           isWithVector: Boolean,
+                                                           matrixType: MatrixType) => {
     @tailrec
     def readVector(lines: Iterator[String],
                    toParse: Int,
@@ -67,7 +69,7 @@ object MatrixReader {
       sorted = Row(noDoubleElements.index, noDoubleElements.values.sortBy(_.columnIndex))
     } yield sorted
 
-    MatrixWithVector[Double](SparseMatrix(mappedMatrixRows), vector)
+    MatrixWithVector[Double](SparseMatrix(mappedMatrixRows, matrixType), vector)
   }
 
   def fillWithEmptyRows(rows: List[Row[Double]]): List[Row[Double]] = {
