@@ -11,14 +11,16 @@ case class SparseMatrix[F: Fractional](rows: List[Row[F]], matrixType: MatrixTyp
       value <- row.values
     } yield RowValueWithIndex(value.value, row.index, value.columnIndex)
 
-    val groupedByColumn = allElements.groupBy(_.columnIndex).values.toList
+    val sorted = allElements.sortBy(_.columnIndex)
+
+    val groupedByColumn = sorted.groupBy(_.columnIndex).values.toList
 
     val mappedToColumns = for {
       column <- groupedByColumn
-      mappedToColumn = Column(column.head.columnIndex, column.map(c => ColumnValue(c.columnIndex, c.value)))
+      mappedToColumn = Column(column.head.columnIndex, column.map(c => ColumnValue(c.rowIndex, c.value)))
     } yield mappedToColumn
 
-    mappedToColumns
+    mappedToColumns.sortBy(_.index)
   }
 }
 
