@@ -24,7 +24,7 @@ object SparseMatrixOperations {
 
   def sparseMatrixOperations: SparseMatrixOperations[SparseMatrix, Double] = new SparseMatrixOperations[SparseMatrix, Double] {
     override def ***(A: SparseMatrix[Double], B: SparseMatrix[Double]): SparseMatrix[Double] = {
-      def multiplyColumnWithRow[F: Fractional](columns: List[ColumnValue[F]], row: Row[F]): F = {
+      def multiplyColumnWithRow[F: Fractional](row: Row[F], columns: List[ColumnValue[F]]): F = {
         implicitly[Fractional[F]].zero
       }
 
@@ -32,7 +32,7 @@ object SparseMatrixOperations {
              secondColumns: List[Column[Double]],
              result: List[Row[Double]]): List[Row[Double]] = {
           val newResult = firstRows.map{e =>
-            Row(e.index, secondColumns.map(c => RowValue[Double](c.index, multiplyColumnWithRow(c.values, e))) )
+            Row(e.index, secondColumns.map(c => RowValue[Double](c.index, multiplyColumnWithRow(e, c.values))) )
           }
           newResult
       }
