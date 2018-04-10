@@ -30,9 +30,15 @@ object SparseMatrixOperations {
       def go(firstRows: List[Row[Double]],
              secondColumns: List[Column[Double]],
              result: List[Row[Double]]): List[Row[Double]] = {
+        case class MultiplicationFactors(row: Row[Double], columns: List[Column[Double]])
+
         if(firstRows.isEmpty)
           result
         else {
+          val rowsWithColumns = for {
+            row <- firstRows
+          } yield MultiplicationFactors(row, secondColumns)
+
           List.empty
         }
       }
