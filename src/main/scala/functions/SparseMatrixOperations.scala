@@ -1,6 +1,9 @@
 package functions
 
 import data._
+import data.matrix.data.column.{Column, ColumnValue}
+import data.matrix.data.row
+import data.matrix.data.row.{Row, RowValue}
 
 import scala.annotation.tailrec
 
@@ -24,7 +27,7 @@ object SparseMatrixOperations {
 
   def sparseMatrixOperations: SparseMatrixOperations[SparseMatrix, Double] = new SparseMatrixOperations[SparseMatrix, Double] {
     override def ***(A: SparseMatrix[Double], B: SparseMatrix[Double]): SparseMatrix[Double] = {
-      def multiplyColumnWithRow[F: Fractional](row: List[RowValue[F]], columns: List[ColumnValue[F]]): F = {
+      def multiplyColumnWithRow[F: Fractional](row: List[RowValue[F]], column: List[ColumnValue[F]]): F = {
         implicitly[Fractional[F]].zero
       }
 
@@ -32,7 +35,7 @@ object SparseMatrixOperations {
              secondColumns: List[Column[Double]],
              result: List[Row[Double]]): List[Row[Double]] = {
           val newResult = firstRows.map{e =>
-            Row(e.index, secondColumns.map(c => RowValue[Double](c.index, multiplyColumnWithRow(e.values, c.values))) )
+            row.Row(e.index, secondColumns.map(c => RowValue[Double](c.index, multiplyColumnWithRow(e.values, c.values))) )
           }
           newResult
       }
@@ -65,7 +68,7 @@ object SparseMatrixOperations {
                     RowValue(el1.columnIndex, implicitly[Fractional[F]].plus(el1.value, el2.value))
                 })
 
-                val newRow = Row(currHeadFirst.index, newElements.sortBy(_.columnIndex))
+                val newRow = row.Row(currHeadFirst.index, newElements.sortBy(_.columnIndex))
                 go(firstMatrixRows.tail, secondMatrixRows.tail, result :+ newRow)
               case (i, j) if i < j =>
                 go(firstMatrixRows.tail, secondMatrixRows, result :+ firstMatrixRows.head)

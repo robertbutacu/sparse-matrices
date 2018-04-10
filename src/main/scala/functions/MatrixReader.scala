@@ -1,6 +1,8 @@
 package functions
 
 import data._
+import data.matrix.data.row
+import data.matrix.data.row.{Row, RowValue, RowValueWithIndex}
 
 import scala.annotation.tailrec
 import scala.io.Source
@@ -103,6 +105,6 @@ object MatrixReader {
       RowValue(v.head.columnIndex, v.map(_.value).sum)
     }.toList
 
-    Row(transformedRow.index, noDoubleElements)
+    row.Row(transformedRow.index, noDoubleElements)
   }
 }

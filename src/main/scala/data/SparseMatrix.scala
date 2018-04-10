@@ -1,5 +1,8 @@
 package data
 
+import data.matrix.data.column.{Column, ColumnValue}
+import data.matrix.data.row.{Row, RowValue, RowValueWithIndex}
+
 case class SparseMatrix[F: Fractional](rows: List[Row[F]], matrixType: MatrixType = Simple) {
   require(rows.forall(r => r.values.length <= MatrixType.maximumLength(matrixType)))
 
