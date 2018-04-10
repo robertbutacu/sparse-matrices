@@ -5,7 +5,6 @@ import functions.MatrixReader.sparseMatrixReader
 import functions.SparseMatrixOperations.sparseMatrixOperations
 
 object Main extends App {
-
   def printCurrentTime(): String = {
     val now = Calendar.getInstance()
     val currentHour = now.get(Calendar.HOUR)
