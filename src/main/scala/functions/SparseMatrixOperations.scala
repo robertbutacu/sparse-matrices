@@ -2,7 +2,7 @@ package functions
 
 import data._
 import data.matrix.data.column.{Column, ColumnValue}
-import data.matrix.data.row
+import data.matrix.data.{MatrixElement, row}
 import data.matrix.data.row.{Row, RowValue}
 
 import scala.annotation.tailrec
@@ -27,17 +27,29 @@ object SparseMatrixOperations {
 
   def sparseMatrixOperations: SparseMatrixOperations[SparseMatrix, Double] = new SparseMatrixOperations[SparseMatrix, Double] {
     override def ***(A: SparseMatrix[Double], B: SparseMatrix[Double]): SparseMatrix[Double] = {
-      def multiplyColumnWithRow[F: Fractional](row: List[RowValue[F]], column: List[ColumnValue[F]]): F = {
-        implicitly[Fractional[F]].zero
+      def multiplyColumnWithRow[F: Fractional](row: List[MatrixElement[F]], column: List[MatrixElement[F]]): F = {
+        val allElements = row ::: column
+
+        val groupedByIndices = allElements.groupBy(_.index).values.toList
+
+        val frac = implicitly[Fractional[F]]
+
+        groupedByIndices.foldRight(frac.zero) { (curr, acc) =>
+          curr.length match {
+            case 1 => acc
+            case 2 => frac.plus(acc, frac.times(curr.head.value, curr(1).value))
+            case _ => acc
+          }
+        }
       }
 
       def go(firstRows: List[Row[Double]],
              secondColumns: List[Column[Double]],
              result: List[Row[Double]]): List[Row[Double]] = {
-          val newResult = firstRows.map{e =>
-            row.Row(e.index, secondColumns.map(c => RowValue[Double](c.index, multiplyColumnWithRow(e.values, c.values))) )
-          }
-          newResult
+        val newResult = firstRows.map { e =>
+          row.Row(e.index, secondColumns.map(c => RowValue[Double](c.index, multiplyColumnWithRow(e.values, c.values))))
+        }
+        newResult
       }
 
       SparseMatrix(go(A.rows, B.asColumns, List.empty), MultiplicationResult)
