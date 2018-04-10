@@ -25,13 +25,15 @@ object Main extends App {
   val aplusbExpected = sparseMatrixReader.readFromFile(aplusbPath, isWithVector = true, AdditionResult)
   val atimesbExpected = sparseMatrixReader.readFromFile(atimesbPath, isWithVector = true, MultiplicationResult)
 
-  //println(s"""Starting adding matrices ${printCurrentTime()}""")
-  //val aplusbActual = sparseMatrixOperations.+++(a.matrix, b.matrix)
+  println("\n\n\n")
+  println(s"""Starting adding matrices ${printCurrentTime()}""")
+  val aplusbActual = sparseMatrixOperations.+++(a.matrix, b.matrix)
 
-  //println(s"""Finished adding ${printCurrentTime()}""")
- //println("Checking equality")
-  // println(SparseMatrix.equals(aplusbActual, aplusbExpected.matrix))
+  println(s"""Finished adding ${printCurrentTime()}""")
+  println("Checking equality")
+  println(SparseMatrix.equals(aplusbActual, aplusbExpected.matrix))
 
+  println("\n\n\n")
   println(s"""Multiplying matrices ${printCurrentTime()}""")
   val atimesbActual = sparseMatrixOperations.***(a.matrix, b.matrix)
 
