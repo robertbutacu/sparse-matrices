@@ -20,5 +20,7 @@ object Main extends App {
 
   val atimesbActual = sparseMatrixOperations.***(a.matrix, b.matrix)
 
+  //atimesbActual.rows.foreach(println)
+  //atimesbExpected.matrix.rows.foreach(println)
   println(SparseMatrix.equals(atimesbActual, atimesbExpected.matrix))
 }

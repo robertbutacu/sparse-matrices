@@ -11,7 +11,7 @@ object MatrixType {
     matrixType match {
       case Simple => 10
       case AdditionResult => 20
-      case MultiplicationResult => 30
+      case MultiplicationResult => Int.MaxValue
     }
   }
 }

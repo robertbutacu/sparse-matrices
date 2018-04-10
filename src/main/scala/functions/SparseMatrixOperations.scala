@@ -47,7 +47,9 @@ object SparseMatrixOperations {
              secondColumns: List[Column[Double]],
              result: List[Row[Double]]): List[Row[Double]] = {
         val newResult = firstRows.map { e =>
-          Row(e.index, secondColumns.map(c => RowValue[Double](c.index, multiplyColumnWithRow(e.values, c.values))))
+          val values = secondColumns.map(c => RowValue[Double](c.index, multiplyColumnWithRow(e.values, c.values)))
+            .filterNot(_.value == 0.0)
+          Row(e.index, values)
         }
         newResult
       }
