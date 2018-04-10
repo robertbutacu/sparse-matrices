@@ -68,7 +68,7 @@ object MatrixReader {
       row <- preMappedMatrixRows
       transformedRow = Row(row.head.rowIndex, row.map(v => RowValue(v.columnIndex, v.value)))
       noDoubleElements = addSameElements(transformedRow)
-      sorted = Row(noDoubleElements.index, noDoubleElements.values.sortBy(_.columnIndex))
+      sorted = Row(noDoubleElements.index, noDoubleElements.values.sortBy(_.index))
     } yield sorted
 
     MatrixWithVector[Double](SparseMatrix(mappedMatrixRows, matrixType), vector)
@@ -91,7 +91,7 @@ object MatrixReader {
     val rowWithIndex = transformedRow.values.zipWithIndex
     val values = transformedRow.values
 
-    val swappedElements = rowWithIndex.find(_._1.columnIndex == transformedRow.index) match {
+    val swappedElements = rowWithIndex.find(_._1.index == transformedRow.index) match {
       case None => values
       case Some(v) =>
         values.slice(0, v._2) ::: values.slice(v._2 + 1, transformedRow.values.length - 2) ::: List(v._1)
@@ -101,8 +101,8 @@ object MatrixReader {
   }
 
   def addSameElements(transformedRow: Row[Double]): Row[Double] = {
-    val noDoubleElements = transformedRow.values.groupBy(_.columnIndex).values.map { v =>
-      RowValue(v.head.columnIndex, v.map(_.value).sum)
+    val noDoubleElements = transformedRow.values.groupBy(_.index).values.map { v =>
+      RowValue(v.head.index, v.map(_.value).sum)
     }.toList
 
     row.Row(transformedRow.index, noDoubleElements)

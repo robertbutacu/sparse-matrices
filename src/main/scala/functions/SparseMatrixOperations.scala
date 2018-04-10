@@ -59,16 +59,16 @@ object SparseMatrixOperations {
             (currHeadFirst.index, currHeadSecond.index) match {
               case (i, j) if i == j =>
                 val groupedElements = (currHeadFirst.values ::: currHeadSecond.values)
-                  .groupBy(_.columnIndex)
+                  .groupBy(_.index)
                   .values
                   .toList
 
                 val newElements = groupedElements.map(r => r.reduce {
                   (el1, el2) =>
-                    RowValue(el1.columnIndex, implicitly[Fractional[F]].plus(el1.value, el2.value))
+                    RowValue(el1.index, implicitly[Fractional[F]].plus(el1.value, el2.value))
                 })
 
-                val newRow = row.Row(currHeadFirst.index, newElements.sortBy(_.columnIndex))
+                val newRow = row.Row(currHeadFirst.index, newElements.sortBy(_.index))
                 go(firstMatrixRows.tail, secondMatrixRows.tail, result :+ newRow)
               case (i, j) if i < j =>
                 go(firstMatrixRows.tail, secondMatrixRows, result :+ firstMatrixRows.head)

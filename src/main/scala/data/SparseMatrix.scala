@@ -12,7 +12,7 @@ case class SparseMatrix[F: Fractional](rows: List[Row[F]], matrixType: MatrixTyp
     val allElements = for {
       row <- rows
       value <- row.values
-    } yield RowValueWithIndex(value.value, row.index, value.columnIndex)
+    } yield RowValueWithIndex(value.value, row.index, value.index)
 
     val sorted = allElements.sortBy(_.columnIndex)
 
@@ -31,7 +31,7 @@ object SparseMatrix {
   def equals(A: SparseMatrix[Double], B: SparseMatrix[Double]): Boolean = {
     def areElementsTheSame(f: List[RowValue[Double]], s: List[RowValue[Double]]): Boolean = {
       def round(n: Double) = Math.round(n * 100) / 100
-      f.zip(s).forall(p => p._1.columnIndex == p._2.columnIndex && round(p._1.value) == round(p._2.value))
+      f.zip(s).forall(p => p._1.index == p._2.index && round(p._1.value) == round(p._2.value))
     }
     A.rows.zip(B.rows).forall(r => r._1.index == r._2.index && areElementsTheSame(r._1.values, r._2.values))
   }

@@ -1,3 +1,5 @@
 package data.matrix.data.row
 
-case class RowValue[F: Fractional](columnIndex: Int, value: F)
+import data.matrix.data.MatrixElement
+
+case class RowValue[F: Fractional](index: Int, value: F) extends MatrixElement[F]
