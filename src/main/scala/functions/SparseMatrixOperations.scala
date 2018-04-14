@@ -28,9 +28,24 @@ object SparseMatrixOperations {
   def sparseMatrixOperations: SparseMatrixOperations[SparseMatrix, Double] = new SparseMatrixOperations[SparseMatrix, Double] {
     override def ***(A: SparseMatrix[Double], B: SparseMatrix[Double]): SparseMatrix[Double] = {
       def multiplyColumnWithRow[F: Fractional](row: List[MatrixElement[F]], column: List[MatrixElement[F]]): F = {
-        val allElements = row ::: column
-        val groupedByIndices = allElements.groupBy(_.index).values.toList
         val frac = implicitly[Fractional[F]]
+
+        def go(currRow: List[MatrixElement[F]], currColumn: List[MatrixElement[F]], result: F): F = {
+          if (currRow.isEmpty || currColumn.isEmpty) result
+          else {
+            (currRow.head.index, currColumn.head.index) match {
+              case (i, j) if i == j =>
+                val updatedResult = frac.plus(result, frac.plus(currRow.head.value, currColumn.head.value))
+                go(currRow.tail, currColumn.tail, updatedResult)
+              case (i, j) if i < j =>
+                go(currRow.tail, currColumn, result)
+              case (i, j) if i > j =>
+                go(currRow, currColumn.tail, result)
+            }
+          }
+        }
+        /*val allElements = row ::: column
+        val groupedByIndices = allElements.groupBy(_.index).values.toList
 
         groupedByIndices.foldRight(frac.zero) { (curr, acc) =>
           curr.length match {
@@ -38,7 +53,8 @@ object SparseMatrixOperations {
             case 2 => frac.plus(acc, frac.times(curr.head.value, curr(1).value))
             case _ => acc
           }
-        }
+        }*/
+        go(row, column, frac.zero)
       }
 
       def go(rows: List[Row[Double]],
@@ -100,6 +116,7 @@ object SparseMatrixOperations {
         val toRowValues = Row(0, v.zipWithIndex.map(e => RowValue(e._2, e._1)))
         SparseMatrix(List(toRowValues), VectorType)
       }
+
       sparseMatrixOperations.***(A, normalizeToSparseMatrix(b))
     }
   }
