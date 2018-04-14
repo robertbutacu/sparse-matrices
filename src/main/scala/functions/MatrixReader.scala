@@ -61,9 +61,9 @@ object MatrixReader {
 
     val rows = readMatrix(lines)
 
-    println("\n\n\n")
+    println("\n")
 
-    println(s"${printCurrentTime()}Read matrix")
+    println(s"${printCurrentTime()} Read matrix")
 
     val groupedByRow = rows.groupBy(_.rowIndex).values.toList
 
@@ -76,7 +76,7 @@ object MatrixReader {
       sorted = Row(noDoubleElements.index, noDoubleElements.values.sortBy(_.index))
     } yield sorted
 
-    println(s"${printCurrentTime()} finished processing\n")
+    println(s"${printCurrentTime()} finished processing")
 
     MatrixWithVector[Double](SparseMatrix(mappedMatrixRows, matrixType), vector)
   }
