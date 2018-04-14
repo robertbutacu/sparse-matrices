@@ -16,9 +16,11 @@ trait SparseMatrixOperations[T[_], F] {
 }
 
 object SparseMatrixOperations {
-  def normalizeToSparseMatrix(v: List[Double]): SparseMatrix[Double] = {
-    val toRowValues = Row(0, v.zipWithIndex.map(e => RowValue(e._2, e._1)))
-    SparseMatrix(List(toRowValues), VectorType)
+  def normalizeToSparseMatrix(values: List[Double]): SparseMatrix[Double] = {
+    val toRowValues = values.zipWithIndex.map{v =>
+      Row(v._2, List(RowValue(0, v._1 + 1.0)))
+    }
+    SparseMatrix(toRowValues, VectorType)
   }
 
   case class RowIterator[F: Fractional](index: Int, values: Iterator[RowValue[F]])

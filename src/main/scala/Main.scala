@@ -48,7 +48,8 @@ object Main extends App {
   val atimesVector = sparseMatrixOperations.***(a.matrix, avector)
   println(s"Finished multiplying ${printCurrentTime()}")
   println("Checking equality")
-  println(SparseMatrix.equals(atimesVector, SparseMatrixOperations.normalizeToSparseMatrix(aVector)))
+  val vectorA = SparseMatrixOperations.normalizeToSparseMatrix(aVector)
+  println(SparseMatrix.equals(atimesVector, vectorA))
 
   println("\n")
   println(s"Started multiplying matrix with vector ${printCurrentTime()}")
