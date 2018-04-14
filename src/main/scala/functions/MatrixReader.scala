@@ -49,7 +49,7 @@ object MatrixReader {
       go(lines, List.empty)
     }
 
-    println(s"[${printCurrentTime()}] Started reading the matrix")
+    println(s"${printCurrentTime()} Started reading the matrix")
 
     val lines = Source.fromFile(filename).getLines()
 
@@ -63,7 +63,7 @@ object MatrixReader {
 
     val rows = readMatrix(lines)
 
-    println(s"[${printCurrentTime()}] Read matrix")
+    println(s"${printCurrentTime()} Read matrix")
 
     val groupedByRow = rows.groupBy(_.rowIndex).values.toList
 
@@ -76,7 +76,7 @@ object MatrixReader {
       sorted = Row(noDoubleElements.index, noDoubleElements.values.sortBy(_.index))
     } yield sorted
 
-    println(s"[${printCurrentTime()}] finished processing")
+    println(s"${printCurrentTime()} finished processing")
 
     println()
 
