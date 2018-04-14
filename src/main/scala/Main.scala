@@ -48,5 +48,4 @@ object Main extends App {
   println(s"Started multiplying matrix with vector ${printCurrentTime()}")
   val btimesVector = sparseMatrixOperations.***(b.matrix, bVector)
   println(s"Finished multiplying ${printCurrentTime()}")
-
 }

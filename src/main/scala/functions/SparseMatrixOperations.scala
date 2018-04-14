@@ -58,8 +58,7 @@ object SparseMatrixOperations {
       }
 
       def go(rows: List[Row[Double]],
-             columns: List[Column[Double]],
-             result: List[Row[Double]]): List[Row[Double]] = {
+             columns: List[Column[Double]]): List[Row[Double]] = {
         val newResult = rows.map { e =>
           val values = columns
             .map(c => RowValue[Double](c.index, multiplyColumnWithRow(e.values, c.values)))
@@ -70,7 +69,7 @@ object SparseMatrixOperations {
         newResult
       }
 
-      SparseMatrix(go(A.rows, B.asColumns, List.empty), MultiplicationResult)
+      SparseMatrix(go(A.rows, B.asColumns), MultiplicationResult)
     }
 
     override def +++(A: SparseMatrix[Double], B: SparseMatrix[Double]): SparseMatrix[Double] = {
