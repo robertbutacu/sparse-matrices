@@ -3,6 +3,7 @@ package functions
 import data._
 import data.matrix.data.row
 import data.matrix.data.row.{Row, RowValue, RowValueWithIndex}
+import functions.CurrentTime.printCurrentTime
 
 import scala.annotation.tailrec
 import scala.io.Source
@@ -60,6 +61,10 @@ object MatrixReader {
 
     val rows = readMatrix(lines)
 
+    println("\n\n\n")
+
+    println(s"${printCurrentTime()}Read matrix")
+
     val groupedByRow = rows.groupBy(_.rowIndex).values.toList
 
     val preMappedMatrixRows = groupedByRow.sortBy(r => r.head.rowIndex)
@@ -70,6 +75,8 @@ object MatrixReader {
       noDoubleElements = addSameElements(transformedRow)
       sorted = Row(noDoubleElements.index, noDoubleElements.values.sortBy(_.index))
     } yield sorted
+
+    println(s"${printCurrentTime()} finished processing\n")
 
     MatrixWithVector[Double](SparseMatrix(mappedMatrixRows, matrixType), vector)
   }
