@@ -7,10 +7,7 @@ import functions.SparseMatrixOperations.sparseMatrixOperations
 import functions.CurrentTime.printCurrentTime
 
 object Main extends App {
-  def normalizeToSparseMatrix(v: List[Double]): SparseMatrix[Double] = {
-    val toRowValues = Row(0, v.zipWithIndex.map(e => RowValue(e._2, e._1)))
-    SparseMatrix(List(toRowValues), VectorType)
-  }
+
 
   println(s"""Starting reading resources ${printCurrentTime()}""")
   val aPath = "E:\\projects\\sparse-matrices\\resources\\a.txt"
@@ -19,9 +16,9 @@ object Main extends App {
   //val atimesbPath = "E:\\projects\\sparse-matrices\\resources\\atimesb.txt"
 
   val a = sparseMatrixReader.readFromFile(aPath, isWithVector = true, Simple)
-  val aVector = normalizeToSparseMatrix(a.vector.get)
+  val aVector = a.vector.get
   val b = sparseMatrixReader.readFromFile(bPath, isWithVector = true, Simple)
-  val bVector = normalizeToSparseMatrix(b.vector.get)
+  val bVector = b.vector.get
 
   //val aplusbExpected = sparseMatrixReader.readFromFile(aplusbPath, isWithVector = true, AdditionResult)
   //val atimesbExpected = sparseMatrixReader.readFromFile(atimesbPath, isWithVector = true, MultiplicationResult)

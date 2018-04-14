@@ -95,6 +95,12 @@ object SparseMatrixOperations {
       SparseMatrix(go(A.rows, B.rows, List.empty), AdditionResult)
     }
 
-    override def ***(A: SparseMatrix[Double], b: List[Double]): SparseMatrix[Double] = ???
+    override def ***(A: SparseMatrix[Double], b: List[Double]): SparseMatrix[Double] = {
+      def normalizeToSparseMatrix(v: List[Double]): SparseMatrix[Double] = {
+        val toRowValues = Row(0, v.zipWithIndex.map(e => RowValue(e._2, e._1)))
+        SparseMatrix(List(toRowValues), VectorType)
+      }
+      sparseMatrixOperations.***(A, normalizeToSparseMatrix(b))
+    }
   }
 }
