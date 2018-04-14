@@ -41,11 +41,11 @@ object SparseMatrixOperations {
         }
       }
 
-      def go(firstRows: List[Row[Double]],
-             secondColumns: List[Column[Double]],
+      def go(rows: List[Row[Double]],
+             columns: List[Column[Double]],
              result: List[Row[Double]]): List[Row[Double]] = {
-        val newResult = firstRows.map { e =>
-          val values = secondColumns
+        val newResult = rows.map { e =>
+          val values = columns
             .map(c => RowValue[Double](c.index, multiplyColumnWithRow(e.values, c.values)))
             .filterNot(_.value == 0.0)
 

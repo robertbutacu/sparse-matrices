@@ -6,7 +6,7 @@ import data.matrix.data.row.{Row, RowValue, RowValueWithIndex}
 case class SparseMatrix[F: Fractional](rows: List[Row[F]], matrixType: MatrixType = Simple) {
   require(rows.forall(r => r.values.length <= MatrixType.maximumLength(matrixType)))
 
-  val maxByColumn: Int = rows.maxBy(_.values.length).values.length
+  def maxByColumn: Int = rows.maxBy(_.values.length).values.length
 
   val asColumns: List[Column[F]] = {
     val allElements = for {
