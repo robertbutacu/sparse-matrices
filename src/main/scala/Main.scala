@@ -12,6 +12,7 @@ object Main extends App {
                        m2: SparseMatrix[Double],
                        expectedResult: SparseMatrix[Double]): Unit = {
     println("\n")
+
     println(s"""Multiplying matrices ${printCurrentTime()}""")
     val atimesbActual = sparseMatrixOperations.***(m1, m2)
     println(s"Finished multiplying ${printCurrentTime()}")
@@ -24,21 +25,26 @@ object Main extends App {
                   m2: SparseMatrix[Double],
                   expectedResult: SparseMatrix[Double]): Unit = {
     println("\n")
+
     println(s"""Starting adding matrices ${printCurrentTime()}""")
     val aplusbActual = sparseMatrixOperations.+++(m1, m2)
     println(s"""Finished adding ${printCurrentTime()}""")
-    //println("Checking equality")
-    //println(SparseMatrix.equals(aplusbActual, expectedResult))
+
+
+    println("Checking equality")
+    println(SparseMatrix.equals(aplusbActual, expectedResult))
   }
 
   def multiplyWithVector(m1: SparseMatrix[Double],
                          expectedResult: List[Double]): Unit = {
 
     println("\n")
+
     println(s"Started multiplying matrix with vector ${printCurrentTime()}")
     val aVector = (m1.rows.maxBy(_.index).index to 0 by -1).toList.map(_.toDouble)
     val aTimesVector = sparseMatrixOperations.***(m1, aVector)
     println(s"Finished multiplying ${printCurrentTime()}")
+
     println("Checking equality")
     val vectorA = SparseMatrixOperations.normalizeToSparseMatrix(expectedResult)
     println(SparseMatrix.equals(aTimesVector, vectorA))
@@ -56,14 +62,14 @@ object Main extends App {
   val b = sparseMatrixReader.readFromFile(bPath, isWithVector = true, Simple)
   val bVector = b.vector.get
 
-  //val aplusbExpected = sparseMatrixReader.readFromFile(aplusbPath, isWithVector = true, AdditionResult)
+  val aplusbExpected = sparseMatrixReader.readFromFile(aplusbPath, isWithVector = true, AdditionResult)
   //val atimesbExpected = sparseMatrixReader.readFromFile(atimesbPath, isWithVector = true, MultiplicationResult)
 
   //multiplyMatrices(a.matrix, b.matrix, atimesbExpected)
-  multiplyMatrices(a.matrix, b.matrix, SparseMatrix(List.empty, Simple))
+  //multiplyMatrices(a.matrix, b.matrix, SparseMatrix(List.empty, Simple))
 
-  //addMatrices(a.matrix, b.matrix, aplusbExpected)
-  addMatrices(a.matrix, b.matrix, SparseMatrix(List.empty, Simple))
+  addMatrices(a.matrix, b.matrix, aplusbExpected.matrix)
+  //addMatrices(a.matrix, b.matrix, SparseMatrix(List.empty, Simple))
 
   multiplyWithVector(a.matrix, aVector)
 
