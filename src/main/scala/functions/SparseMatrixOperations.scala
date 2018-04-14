@@ -35,7 +35,7 @@ object SparseMatrixOperations {
           else {
             (currRow.head.index, currColumn.head.index) match {
               case (i, j) if i == j =>
-                val updatedResult = frac.plus(result, frac.plus(currRow.head.value, currColumn.head.value))
+                val updatedResult = frac.plus(result, frac.times(currRow.head.value, currColumn.head.value))
                 go(currRow.tail, currColumn.tail, updatedResult)
               case (i, j) if i < j =>
                 go(currRow.tail, currColumn, result)
