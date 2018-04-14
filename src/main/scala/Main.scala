@@ -44,18 +44,20 @@ object Main extends App {
   println("\n")
   println(s"Started multiplying matrix with vector ${printCurrentTime()}")
 
-  val vector = (2018 to 1 by -1).toList.map(_.toDouble)
-  val atimesVector = sparseMatrixOperations.***(a.matrix, vector)
+  val avector = (a.matrix.rows.maxBy(_.index).index to 0 by -1).toList.map(_.toDouble)
+  val atimesVector = sparseMatrixOperations.***(a.matrix, avector)
   println(s"Finished multiplying ${printCurrentTime()}")
   println("Checking equality")
   println(SparseMatrix.equals(atimesVector, SparseMatrixOperations.normalizeToSparseMatrix(aVector)))
 
   println("\n")
   println(s"Started multiplying matrix with vector ${printCurrentTime()}")
-  val btimesVector = sparseMatrixOperations.***(b.matrix, vector)
+  val bvector = (b.matrix.rows.maxBy(_.index).index to 0 by -1).toList.map(_.toDouble)
+  val btimesVector = sparseMatrixOperations.***(b.matrix, bvector)
   println(s"Finished multiplying ${printCurrentTime()}")
   println("Checking equality")
 
   println(SparseMatrix.equals(btimesVector, SparseMatrixOperations.normalizeToSparseMatrix(bVector)))
 
+  //println(a.matrix.rows.maxBy(_.index))
 }

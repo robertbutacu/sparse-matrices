@@ -23,7 +23,6 @@ object SparseMatrixOperations {
 
   case class RowIterator[F: Fractional](index: Int, values: Iterator[RowValue[F]])
 
-
   case class ConcurrentColumnIterator[F: Fractional](first: RowValueWithIndex2[F],
                                                      second: RowValueWithIndex2[F])
 
@@ -114,9 +113,7 @@ object SparseMatrixOperations {
       SparseMatrix(go(A.rows, B.rows, List.empty), AdditionResult)
     }
 
-    override def ***(A: SparseMatrix[Double], b: List[Double]): SparseMatrix[Double] = {
-
+    override def ***(A: SparseMatrix[Double], b: List[Double]): SparseMatrix[Double] =
       sparseMatrixOperations.***(A, normalizeToSparseMatrix(b))
-    }
   }
 }
