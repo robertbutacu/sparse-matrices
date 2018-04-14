@@ -32,9 +32,6 @@ object SparseMatrix {
     def areElementsTheSame(f: List[RowValue[Double]], s: List[RowValue[Double]]): Boolean = {
       def round(n: Double) = Math.round(n * 100) / 100
       //f.zip(s).dropWhile(p => p._1.index == p._2.index && round(p._1.value) == round(p._2.value)).foreach(println)
-      println(f)
-      println(s)
-      println("\n\n")
       f.zip(s).forall(p => p._1.index == p._2.index && round(p._1.value) == round(p._2.value))
     }
 

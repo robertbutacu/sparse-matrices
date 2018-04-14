@@ -35,6 +35,7 @@ object SparseMatrixOperations {
       def multiplyColumnWithRow[F: Fractional](row: List[MatrixElement[F]], column: List[MatrixElement[F]]): F = {
         val frac = implicitly[Fractional[F]]
 
+        @tailrec
         def go(currRow: List[MatrixElement[F]], currColumn: List[MatrixElement[F]], result: F): F = {
           if (currRow.isEmpty || currColumn.isEmpty) result
           else {
