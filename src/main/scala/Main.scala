@@ -20,8 +20,8 @@ object Main extends App {
   val b = sparseMatrixReader.readFromFile(bPath, isWithVector = true, Simple)
   val bVector = b.vector.get
 
-  val aplusbExpected = sparseMatrixReader.readFromFile(aplusbPath, isWithVector = true, AdditionResult)
-  val atimesbExpected = sparseMatrixReader.readFromFile(atimesbPath, isWithVector = true, MultiplicationResult)
+  //val aplusbExpected = sparseMatrixReader.readFromFile(aplusbPath, isWithVector = true, AdditionResult)
+  //val atimesbExpected = sparseMatrixReader.readFromFile(atimesbPath, isWithVector = true, MultiplicationResult)
 
   println("\n")
   println(s"""Starting adding matrices ${printCurrentTime()}""")
@@ -29,7 +29,7 @@ object Main extends App {
 
   println(s"""Finished adding ${printCurrentTime()}""")
   println("Checking equality")
-  println(SparseMatrix.equals(aplusbActual, aplusbExpected.matrix))
+  //println(SparseMatrix.equals(aplusbActual, aplusbExpected.matrix))
 
   println("\n")
   println(s"""Multiplying matrices ${printCurrentTime()}""")
@@ -37,7 +37,8 @@ object Main extends App {
 
   println(s"""Finished multiplying ${printCurrentTime()}""")
   println(s"""Checking equality ${printCurrentTime()}""")
-  println(SparseMatrix.equals(atimesbActual, atimesbExpected.matrix))
+
+  //println(SparseMatrix.equals(atimesbActual, atimesbExpected.matrix))
 
   println("\n")
   println(s"Started multiplying matrix with vector ${printCurrentTime()}")
