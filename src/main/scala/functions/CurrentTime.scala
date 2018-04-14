@@ -10,6 +10,6 @@ object CurrentTime {
     val currentSecond = now.get(Calendar.SECOND)
     val currentMilli = now.get(Calendar.MILLISECOND)
 
-    s"""$currentHour : $currentMinute : $currentSecond :: $currentMilli"""
+    s"""$currentHour:$currentMinute:$currentSecond::$currentMilli"""
   }
 }

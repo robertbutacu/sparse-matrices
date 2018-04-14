@@ -8,11 +8,11 @@ object OperationExecutor {
   def multiplyMatrices(m1: SparseMatrix[Double],
                        m2: SparseMatrix[Double],
                        expectedResult: SparseMatrix[Double]): Unit = {
-    println("\n")
+    println()
 
-    println(s"""Multiplying matrices ${printCurrentTime()}""")
+    println(s"""[${printCurrentTime()}] Multiplying matrices """)
     val atimesbActual = sparseMatrixOperations.***(m1, m2)
-    println(s"Finished multiplying ${printCurrentTime()}")
+    println(s"[${printCurrentTime()}] Finished multiplying")
 
     //println(s"""Checking equality ${printCurrentTime()}""")
     //println(SparseMatrix.equals(atimesbActual, expectedResult))
@@ -21,11 +21,11 @@ object OperationExecutor {
   def addMatrices(m1: SparseMatrix[Double],
                   m2: SparseMatrix[Double],
                   expectedResult: SparseMatrix[Double]): Unit = {
-    println("\n")
+    println()
 
-    println(s"""Starting adding matrices ${printCurrentTime()}""")
+    println(s"""[${printCurrentTime()}] Starting adding matrices""")
     val aplusbActual = sparseMatrixOperations.+++(m1, m2)
-    println(s"""Finished adding ${printCurrentTime()}""")
+    println(s"""[${printCurrentTime()}] Finished adding""")
 
 
     //println("Checking equality")
@@ -37,10 +37,10 @@ object OperationExecutor {
 
     println("\n")
 
-    println(s"Started multiplying matrix with vector ${printCurrentTime()}")
+    println(s"[${printCurrentTime()}] Started multiplying matrix with vector")
     val aVector = (m1.rows.maxBy(_.index).index to 0 by -1).toList.map(_.toDouble)
     val aTimesVector = sparseMatrixOperations.***(m1, aVector)
-    println(s"Finished multiplying ${printCurrentTime()}")
+    println(s"[${printCurrentTime()}] Finished multiplying")
 
     println("Checking equality")
     val vectorA = SparseMatrixOperations.normalizeToSparseMatrix(expectedResult)
