@@ -5,6 +5,7 @@ import data._
 import functions.MatrixReader.sparseMatrixReader
 import functions.SparseMatrixOperations.sparseMatrixOperations
 import functions.CurrentTime.printCurrentTime
+import functions.SparseMatrixOperations
 
 object Main extends App {
 
@@ -42,11 +43,19 @@ object Main extends App {
 
   println("\n")
   println(s"Started multiplying matrix with vector ${printCurrentTime()}")
-  val atimesVector = sparseMatrixOperations.***(a.matrix, aVector)
+
+  val vector = (2018 to 1 by -1).toList.map(_.toDouble)
+  val atimesVector = sparseMatrixOperations.***(a.matrix, vector)
   println(s"Finished multiplying ${printCurrentTime()}")
+  println("Checking equality")
+  println(SparseMatrix.equals(atimesVector, SparseMatrixOperations.normalizeToSparseMatrix(aVector)))
 
   println("\n")
   println(s"Started multiplying matrix with vector ${printCurrentTime()}")
-  val btimesVector = sparseMatrixOperations.***(b.matrix, bVector)
+  val btimesVector = sparseMatrixOperations.***(b.matrix, vector)
   println(s"Finished multiplying ${printCurrentTime()}")
+  println("Checking equality")
+
+  println(SparseMatrix.equals(btimesVector, SparseMatrixOperations.normalizeToSparseMatrix(bVector)))
+
 }
