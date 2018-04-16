@@ -1,8 +1,8 @@
 package functions
 
 import data._
+import data.matrix.data.row.{Row, RowValue, RowValueWithIndex}
 import data.matrix.data.{MatrixWithVector, row}
-import data.matrix.data.row.{Row, RowValue, RowValueWithIndex, RowValueWithIndex2}
 import functions.CurrentTime.printCurrentTime
 
 import scala.annotation.tailrec
@@ -29,10 +29,10 @@ object MatrixReader {
       }
     }
 
-    def readMatrix(lines: Iterator[String]): List[RowValueWithIndex2[Double]] = {
+    def readMatrix(lines: Iterator[String]): List[RowValueWithIndex[Double]] = {
       @tailrec
       def go(lines: Iterator[String],
-             matrixLines: List[RowValueWithIndex2[Double]]): List[RowValueWithIndex2[Double]] = {
+             matrixLines: List[RowValueWithIndex[Double]]): List[RowValueWithIndex[Double]] = {
         if (!lines.hasNext)
           matrixLines
         else {
@@ -40,7 +40,7 @@ object MatrixReader {
 
           val rowValues = currLine.toList.head.split(", ")
 
-          val rowValue = RowValueWithIndex2(rowValues(1).toInt, RowValue(rowValues(2).toInt, rowValues(0).toDouble))
+          val rowValue = RowValueWithIndex(rowValues(1).toInt, RowValue(rowValues(2).toInt, rowValues(0).toDouble))
 
           go(lines, matrixLines :+ rowValue)
         }

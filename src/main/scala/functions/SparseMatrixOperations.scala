@@ -3,7 +3,7 @@ package functions
 import data._
 import data.matrix.data.column.{Column, ColumnValue}
 import data.matrix.data.{MatrixElement, row}
-import data.matrix.data.row.{Row, RowValue, RowValueWithIndex2}
+import data.matrix.data.row.{Row, RowValue, RowValueWithIndex}
 
 import scala.annotation.tailrec
 
@@ -25,8 +25,8 @@ object SparseMatrixOperations {
 
   case class RowIterator[F: Fractional](index: Int, values: Iterator[RowValue[F]])
 
-  case class ConcurrentColumnIterator[F: Fractional](first: RowValueWithIndex2[F],
-                                                     second: RowValueWithIndex2[F])
+  case class ConcurrentColumnIterator[F: Fractional](first: RowValueWithIndex[F],
+                                                     second: RowValueWithIndex[F])
 
   type RowParser[F] = Iterator[RowIterator[F]]
 

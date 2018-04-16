@@ -1,7 +1,7 @@
 package data
 
 import data.matrix.data.column.{Column, ColumnValue}
-import data.matrix.data.row.{Row, RowValue, RowValueWithIndex2}
+import data.matrix.data.row.{Row, RowValue, RowValueWithIndex}
 
 case class SparseMatrix[F: Fractional](rows: List[Row[F]], matrixType: MatrixType = Simple) {
   require(rows.forall(r => r.values.length <= MatrixType.maximumLength(matrixType)))
@@ -12,7 +12,7 @@ case class SparseMatrix[F: Fractional](rows: List[Row[F]], matrixType: MatrixTyp
     val allElements = for {
       row <- rows
       value <- row.values
-    } yield RowValueWithIndex2(row.index, value)
+    } yield RowValueWithIndex(row.index, value)
 
     val groupedByColumn = allElements.groupBy(_.value.index).values.toList
 
