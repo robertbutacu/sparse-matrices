@@ -3,7 +3,7 @@ package functions
 import data._
 import data.matrix.data.column.{Column, ColumnValue}
 import data.matrix.data.{MatrixElement, row}
-import data.matrix.data.row.{Row, RowValue}
+import data.matrix.data.row.{Row, RowValue, RowValueWithIndex2}
 
 import scala.annotation.tailrec
 
