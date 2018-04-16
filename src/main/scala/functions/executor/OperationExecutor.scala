@@ -1,8 +1,9 @@
-package functions
+package functions.executor
 
 import data.SparseMatrix
-import functions.CurrentTime.printCurrentTime
-import functions.SparseMatrixOperations.sparseMatrixOperations
+import functions.matrix.operations.SparseMatrixOperations._
+import functions.executor.CurrentTime.printCurrentTime
+import functions.matrix.operations.SparseMatrixOperations
 
 object OperationExecutor {
   def multiplyMatrices(m1: SparseMatrix[Double],

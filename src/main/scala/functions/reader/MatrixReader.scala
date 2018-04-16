@@ -1,9 +1,9 @@
-package functions
+package functions.reader
 
 import data._
 import data.matrix.data.row.{Row, RowValue, RowValueWithIndex}
 import data.matrix.data.{MatrixWithVector, row}
-import functions.CurrentTime.printCurrentTime
+import functions.executor.CurrentTime.printCurrentTime
 
 import scala.annotation.tailrec
 import scala.io.Source

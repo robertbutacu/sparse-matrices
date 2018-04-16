@@ -1,9 +1,9 @@
-package functions
+package functions.matrix.operations
 
 import data._
-import data.matrix.data.column.{Column, ColumnValue}
-import data.matrix.data.{MatrixElement, row}
+import data.matrix.data.column.Column
 import data.matrix.data.row.{Row, RowValue, RowValueWithIndex}
+import data.matrix.data.{MatrixElement, row}
 
 import scala.annotation.tailrec
 

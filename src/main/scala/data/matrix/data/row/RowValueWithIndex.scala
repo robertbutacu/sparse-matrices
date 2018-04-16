@@ -1,6 +1,6 @@
 package data.matrix.data.row
 
-import functions.SparseMatrixOperations.RowIterator
+import functions.matrix.operations.SparseMatrixOperations.RowIterator
 
 case class RowValueWithIndex[F: Fractional](rowIndex: Int, value: RowValue[F])
 
