@@ -1,4 +1,4 @@
-package functions
+package data.matrix.data
 
 import data.SparseMatrix
 

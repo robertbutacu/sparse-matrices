@@ -1,8 +1,8 @@
 package functions
 
 import data._
-import data.matrix.data.row
-import data.matrix.data.row.{Row, RowValue, RowValueWithIndex}
+import data.matrix.data.{MatrixWithVector, row}
+import data.matrix.data.row.{Row, RowValue, RowValueWithIndex, RowValueWithIndex2}
 import functions.CurrentTime.printCurrentTime
 
 import scala.annotation.tailrec
@@ -29,10 +29,10 @@ object MatrixReader {
       }
     }
 
-    def readMatrix(lines: Iterator[String]): List[RowValueWithIndex[Double]] = {
+    def readMatrix(lines: Iterator[String]): List[RowValueWithIndex2[Double]] = {
       @tailrec
       def go(lines: Iterator[String],
-             matrixLines: List[RowValueWithIndex[Double]]): List[RowValueWithIndex[Double]] = {
+             matrixLines: List[RowValueWithIndex2[Double]]): List[RowValueWithIndex2[Double]] = {
         if (!lines.hasNext)
           matrixLines
         else {
@@ -40,7 +40,7 @@ object MatrixReader {
 
           val rowValues = currLine.toList.head.split(", ")
 
-          val rowValue = RowValueWithIndex(rowValues(0).toDouble, rowValues(1).toInt, rowValues(2).toInt)
+          val rowValue = RowValueWithIndex2(rowValues(1).toInt, RowValue(rowValues(2).toInt, rowValues(0).toDouble))
 
           go(lines, matrixLines :+ rowValue)
         }
@@ -71,7 +71,7 @@ object MatrixReader {
 
     val mappedMatrixRows = for {
       row <- preMappedMatrixRows
-      transformedRow = Row(row.head.rowIndex, row.map(v => RowValue(v.columnIndex, v.value)))
+      transformedRow = Row(row.head.rowIndex, row.map(_.value))
       noDoubleElements = addSameElements(transformedRow)
       sorted = Row(noDoubleElements.index, noDoubleElements.values.sortBy(_.index))
     } yield sorted
