@@ -27,9 +27,13 @@ object MatrixReader {
 
     lines.drop(1) // dropping the empty line
 
+    println(s"${printCurrentTime()} Reading vector if needed")
+
     val vector = if (isWithVector) Some(readVector(lines, numberOfLines, List.empty)) else None
 
     lines.drop(1) // dropping the empty line
+
+    println(s"${printCurrentTime()} Reading matrix")
 
     val rows = readMatrix(lines)
 
