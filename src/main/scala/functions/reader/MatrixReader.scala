@@ -7,48 +7,16 @@ import functions.executor.CurrentTime.printCurrentTime
 
 import scala.annotation.tailrec
 import scala.io.Source
+import functions.reader.FileReader._
 
 trait MatrixReader[F] {
-  def readFromFile(filename: String, isWithVector: Boolean, matrixType: MatrixType): MatrixWithVector[F]
+  def readFromFile(filename: String, isWithVector: Boolean, matrixType: RowsType): MatrixWithVector[F]
 }
 
 object MatrixReader {
   def sparseMatrixReader: MatrixReader[Double] = (filename: String,
                                                            isWithVector: Boolean,
-                                                           matrixType: MatrixType) => {
-    @tailrec
-    def readVector(lines: Iterator[String],
-                   toParse: Int,
-                   vector: List[Double]): List[Double] = {
-      if (toParse == 0)
-        vector
-      else {
-        val currLine = lines.take(1).toList.head
-
-        readVector(lines, toParse - 1, vector :+ currLine.toDouble)
-      }
-    }
-
-    def readMatrix(lines: Iterator[String]): List[RowValueWithIndex[Double]] = {
-      @tailrec
-      def go(lines: Iterator[String],
-             matrixLines: List[RowValueWithIndex[Double]]): List[RowValueWithIndex[Double]] = {
-        if (!lines.hasNext)
-          matrixLines
-        else {
-          val currLine = lines.take(1)
-
-          val rowValues = currLine.toList.head.split(", ")
-
-          val rowValue = RowValueWithIndex(rowValues(1).toInt, RowValue(rowValues(2).toInt, rowValues(0).toDouble))
-
-          go(lines, matrixLines :+ rowValue)
-        }
-      }
-
-      go(lines, List.empty)
-    }
-
+                                                           matrixType: RowsType) => {
     println(s"${printCurrentTime()} Started reading the matrix")
 
     val lines = Source.fromFile(filename).getLines()
