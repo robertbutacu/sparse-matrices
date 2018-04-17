@@ -3,8 +3,10 @@ package data
 import data.matrix.data.column.{Column, ColumnValue}
 import data.matrix.data.row.{Row, RowValue, RowValueWithIndex}
 
-case class SparseMatrix[F: Fractional](rows: List[Row[F]], rowsType: RowsType = Simple) {
-  require(rows.forall(r => r.values.length <= RowsType.maximumLength(rowsType)))
+case class SparseMatrix[F: Fractional](rows: List[Row[F]],
+                                       rowsType: RowsType = Simple,
+                                       matrixType: MatrixType = SparseMatrixType) {
+  require(rows.forall(r => r.values.length <= RowsType.maximumLength(rowsType)) && MatrixType.isValid(this))
 
   def maxByColumn: Int = rows.maxBy(_.values.length).values.length
 
