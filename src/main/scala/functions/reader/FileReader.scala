@@ -12,7 +12,7 @@ object FileReader {
     if (toParse == 0)
       vector
     else {
-      val currLine = lines.take(1).toList.head
+      val currLine = lines.next()
 
       readVector(lines, toParse - 1, vector :+ currLine.toDouble)
     }
@@ -26,9 +26,9 @@ object FileReader {
       if (!lines.hasNext)
         matrixLines
       else {
-        val currLine = lines.take(1)
+        val currLine = lines.next()
 
-        val rowValues = currLine.toList.head.split(", ")
+        val rowValues = currLine.split(", ")
 
         val rowValue = RowValueWithIndex(rowValues(1).toInt, RowValue(rowValues(2).toInt, rowValues(0).toDouble))
 

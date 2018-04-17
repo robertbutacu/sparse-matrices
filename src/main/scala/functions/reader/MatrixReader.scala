@@ -23,7 +23,7 @@ object MatrixReader {
 
     val lines = Source.fromFile(filename).getLines()
 
-    val numberOfLines = lines.take(1).toList.head.toInt
+    val numberOfLines = lines.next().toInt
 
     lines.drop(1) // dropping the empty line
 
