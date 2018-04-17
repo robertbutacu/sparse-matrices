@@ -33,4 +33,12 @@ object LabRunner {
 
     //println(a.matrix.rows.maxBy(_.index))
   }
+
+  def runLab5(): Unit = {
+    val m1 = "E:\\projects\\sparse-matrices\\resources\\gauss-seidel\\m1.txt"
+    val m2= "E:\\projects\\sparse-matrices\\resources\\gauss-seidel\\m2.txt"
+    val m3 = "E:\\projects\\sparse-matrices\\resources\\gauss-seidel\\m3.txt"
+    val m4 = "E:\\projects\\sparse-matrices\\resources\\gauss-seidel\\m4.txt"
+    val m5 = "E:\\projects\\sparse-matrices\\resources\\gauss-seidel\\m5.txt"
+  }
 }

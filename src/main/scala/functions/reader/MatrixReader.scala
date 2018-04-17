@@ -10,13 +10,15 @@ import scala.io.Source
 import functions.reader.FileReader._
 
 trait MatrixReader[F] {
-  def readFromFile(filename: String, isWithVector: Boolean, matrixType: RowsType): MatrixWithVector[F]
+  def readFromFile(filename: String, isWithVector: Boolean, rowsType: RowsType,
+                   matrixType: MatrixType = SparseMatrixType): MatrixWithVector[F]
 }
 
 object MatrixReader {
   def sparseMatrixReader: MatrixReader[Double] = (filename: String,
-                                                           isWithVector: Boolean,
-                                                           matrixType: RowsType) => {
+                                                  isWithVector: Boolean,
+                                                  rowsType: RowsType,
+                                                  matrixType: MatrixType) => {
     println(s"${printCurrentTime()} Started reading the matrix")
 
     val lines = Source.fromFile(filename).getLines()
@@ -48,7 +50,7 @@ object MatrixReader {
 
     println()
 
-    MatrixWithVector[Double](SparseMatrix(mappedMatrixRows, matrixType), vector)
+    MatrixWithVector[Double](SparseMatrix(mappedMatrixRows, rowsType, matrixType), vector)
   }
 
   def fillWithEmptyRows(rows: List[Row[Double]]): List[Row[Double]] = {
