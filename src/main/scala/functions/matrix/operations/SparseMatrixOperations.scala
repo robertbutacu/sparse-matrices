@@ -50,16 +50,7 @@ object SparseMatrixOperations {
             }
           }
         }
-        /*val allElements = row ::: column
-        val groupedByIndices = allElements.groupBy(_.index).values.toList
 
-        groupedByIndices.foldRight(frac.zero) { (curr, acc) =>
-          curr.length match {
-            case 1 => acc
-            case 2 => frac.plus(acc, frac.times(curr.head.value, curr(1).value))
-            case _ => acc
-          }
-        }*/
         go(row, column, frac.zero)
       }
 
