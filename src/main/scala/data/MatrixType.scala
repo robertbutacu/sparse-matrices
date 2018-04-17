@@ -10,7 +10,7 @@ object MatrixType {
     matrix.matrixType match {
       case SparseMatrixType => true
       case GaussSeidelMatrixType =>
-        matrix.rows.forall(r => r.values.exists(v => v.value == r.index))
+        matrix.rows.forall(r => r.values.exists(v => v.index == r.index))
     }
   }
 }

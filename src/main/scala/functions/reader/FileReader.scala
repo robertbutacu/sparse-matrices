@@ -21,7 +21,8 @@ object FileReader {
   def readMatrix(lines: Iterator[String]): List[RowValueWithIndex[Double]] = {
     @tailrec
     def go(lines: Iterator[String],
-           matrixLines: List[RowValueWithIndex[Double]]): List[RowValueWithIndex[Double]] = {
+           matrixLines: List[RowValueWithIndex[Double]],
+           currentIteration: Int = 0): List[RowValueWithIndex[Double]] = {
       if (!lines.hasNext)
         matrixLines
       else {
@@ -31,7 +32,11 @@ object FileReader {
 
         val rowValue = RowValueWithIndex(rowValues(1).toInt, RowValue(rowValues(2).toInt, rowValues(0).toDouble))
 
-        go(lines, matrixLines :+ rowValue)
+        if(currentIteration % 10000 == 0) {
+          print("|")
+          go(lines, matrixLines :+ rowValue, currentIteration + 1)
+        }
+        else go(lines, matrixLines :+ rowValue, currentIteration + 1)
       }
     }
 

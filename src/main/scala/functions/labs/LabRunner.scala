@@ -41,11 +41,11 @@ object LabRunner {
     val m4Path = "E:\\projects\\sparse-matrices\\resources\\gauss-seidel\\m4.txt"
     val m5Path = "E:\\projects\\sparse-matrices\\resources\\gauss-seidel\\m5.txt"
 
-    val m1 = sparseMatrixReader.readFromFile(m1Path, isWithVector = true, Simple, GaussSeidelMatrixType)
+    //val m1 = sparseMatrixReader.readFromFile(m1Path, isWithVector = true, Simple, GaussSeidelMatrixType)
     val m2 = sparseMatrixReader.readFromFile(m2Path, isWithVector = true, Simple, GaussSeidelMatrixType)
-    val m3 = sparseMatrixReader.readFromFile(m3Path, isWithVector = true, Simple, GaussSeidelMatrixType)
-    val m4 = sparseMatrixReader.readFromFile(m4Path, isWithVector = true, Simple, GaussSeidelMatrixType)
-    val m5 = sparseMatrixReader.readFromFile(m5Path, isWithVector = true, Simple, GaussSeidelMatrixType)
+    //val m3 = sparseMatrixReader.readFromFile(m3Path, isWithVector = true, Simple, GaussSeidelMatrixType)
+    //val m4 = sparseMatrixReader.readFromFile(m4Path, isWithVector = true, Simple, GaussSeidelMatrixType)
+    //val m5 = sparseMatrixReader.readFromFile(m5Path, isWithVector = true, Simple, GaussSeidelMatrixType)
 
   }
 }

@@ -37,7 +37,7 @@ object MatrixReader {
 
     val rows = readMatrix(lines)
 
-    println(s"${printCurrentTime()} Read matrix")
+    println(s"\n${printCurrentTime()} Read matrix")
 
     val groupedByRow = rows.groupBy(_.rowIndex).values.toList
 
