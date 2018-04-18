@@ -25,6 +25,10 @@ object LinearSystemSolver {
       }
     }
 
+    def isStop(pi: List[Double], ci: List[Double]): Boolean = {
+      pi.zip(ci).forall(p => Math.abs(p._1 - p._2) <= precision.value )
+    }
+
     List.empty
   }
 }
