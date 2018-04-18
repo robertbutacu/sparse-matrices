@@ -28,9 +28,9 @@ object LinearSystemSolver {
           if row.index == currentIndex
           rowValue <- row.values
           if rowValue.index == currentIndex
-          valsWithoutDiag = row.values.filterNot(_.index == currentIndex)
-          valsWithVector = valsWithoutDiag.map(p => (p, vector(p.index)))
-          sum = valsWithVector.foldRight(0.0)((curr, acc) => acc + curr._1.value * curr._2)
+          valuesWithoutDiagonal = row.values.filterNot(_.index == currentIndex)
+          valuesWithVector = valuesWithoutDiagonal.map(p => (p, vector(p.index)))
+          sum = valuesWithVector.foldRight(0.0)((curr, acc) => acc + curr._1.value * curr._2)
           vectorValue = vector(currentIndex)
         } yield ( vectorValue - sum ) / vector(currentIndex)
 
