@@ -23,18 +23,21 @@ object LinearSystemSolver {
       if (currentIndex == values.length)
         values
       else {
-        val updatedValue = for {
-          row <- matrix.rows
-          if row.index == currentIndex
-          rowValue <- row.values
+        val updatedValues = (for {
+          row <- matrix.rows.zipWithIndex
+          if row._1.index == currentIndex
+          rowValue <- row._1.values
           if rowValue.index == currentIndex
-          valuesWithoutDiagonal = row.values.filterNot(_.index == currentIndex)
+          valuesWithoutDiagonal = row._1.values.filterNot(_.index == currentIndex)
           valuesWithSolution = valuesWithoutDiagonal.map(p => (p, values(p.index)))
           sum = valuesWithSolution.foldRight(0.0)((curr, acc) => acc + curr._1.value * curr._2)
           vectorValue = vector(currentIndex)
-        } yield ( vectorValue - sum ) / rowValue.value
+        } yield (( vectorValue - sum ) / rowValue.value, row._2)).head
 
-        iterate(matrix, vector, updatedValue, currentIndex + 1)
+        val updatedAproximations =
+          (values.slice(0, updatedValues._2) :+ updatedValues._1) ::: values.slice(updatedValues._2 + 1, values.length)
+
+        iterate(matrix, vector, updatedAproximations, currentIndex + 1)
       }
     }
 
@@ -48,6 +51,9 @@ object LinearSystemSolver {
            currIteration: List[Double],
            k: Int = 1): List[Double] = {
       val nextIteration = iterate(matrix, vector, currIteration)
+
+      println(" Curr iteration " + currIteration)
+      println(" Next iteration " + nextIteration)
 
       if (hasReachedEnd(currIteration, nextIteration) || k >= 10000)
         nextIteration //either should be fine, nextIteration should be slightly more precise tho
