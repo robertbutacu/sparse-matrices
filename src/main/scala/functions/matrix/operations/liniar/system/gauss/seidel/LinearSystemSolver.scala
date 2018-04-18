@@ -7,8 +7,6 @@ import scala.annotation.tailrec
 
 object LinearSystemSolver {
   def solve(matrixWithVector: MatrixWithVector[Double], precision: Precision): Option[List[Double]] = {
-
-
     /**
       *
       * @param matrix       - ???
@@ -25,7 +23,18 @@ object LinearSystemSolver {
       if (currentIndex == values.length)
         values
       else {
-        iterate(matrix, vector, values, currentIndex + 1)
+        val updatedValue = for {
+          row <- matrix.rows
+          if row.index == currentIndex
+          rowValue <- row.values
+          if rowValue.index == currentIndex
+          valsWithoutDiag = row.values.filterNot(_.index == currentIndex)
+          valsWithVector = valsWithoutDiag.map(p => (p, vector(p.index)))
+          sum = valsWithVector.foldRight(0.0)((curr, acc) => acc + curr._1.value * curr._2)
+          vectorValue = vector(currentIndex)
+        } yield ( vectorValue - sum ) / vector(currentIndex)
+
+        iterate(matrix, vector, updatedValue, currentIndex + 1)
       }
     }
 
