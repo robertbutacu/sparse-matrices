@@ -29,10 +29,10 @@ object LinearSystemSolver {
           rowValue <- row.values
           if rowValue.index == currentIndex
           valuesWithoutDiagonal = row.values.filterNot(_.index == currentIndex)
-          valuesWithVector = valuesWithoutDiagonal.map(p => (p, vector(p.index)))
-          sum = valuesWithVector.foldRight(0.0)((curr, acc) => acc + curr._1.value * curr._2)
+          valuesWithSolution = valuesWithoutDiagonal.map(p => (p, values(p.index)))
+          sum = valuesWithSolution.foldRight(0.0)((curr, acc) => acc + curr._1.value * curr._2)
           vectorValue = vector(currentIndex)
-        } yield ( vectorValue - sum ) / vector(currentIndex)
+        } yield ( vectorValue - sum ) / rowValue.value
 
         iterate(matrix, vector, updatedValue, currentIndex + 1)
       }
