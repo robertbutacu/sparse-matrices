@@ -34,10 +34,10 @@ object LinearSystemSolver {
           vectorValue = vector(currentIndex)
         } yield (( vectorValue - sum ) / rowValue.value, row._2)).head
 
-        val updatedAproximations =
+        val updatedApproximations =
           (values.slice(0, updatedValues._2) :+ updatedValues._1) ::: values.slice(updatedValues._2 + 1, values.length)
 
-        iterate(matrix, vector, updatedAproximations, currentIndex + 1)
+        iterate(matrix, vector, updatedApproximations, currentIndex + 1)
       }
     }
 
