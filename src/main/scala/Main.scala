@@ -12,5 +12,5 @@ object Main extends App {
     Row(2, List(RowValue(0, -1.0), RowValue(1, 1.0), RowValue(2, 7.0)))
   ))
   //LabRunner.runLab5()
-  LinearSystemSolver.solve(MatrixWithVector(matrix, Some(List(3.0, 9.0, -6.0))), Precision(5))
+  LinearSystemSolver.solve(MatrixWithVector(matrix, Some(List(3.0, 9.0, -6.0))), Precision(3))
 }
