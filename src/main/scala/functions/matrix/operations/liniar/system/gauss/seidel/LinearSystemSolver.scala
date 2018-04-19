@@ -53,8 +53,8 @@ object LinearSystemSolver {
            k: Int = 1): List[Double] = {
       val nextIteration = iterate(matrix, vector, currIteration)
 
-      println(s"${printCurrentTime()} Curr iteration $currIteration")
-      println(s"${printCurrentTime()} Next iteration $nextIteration")
+      println(s"${printCurrentTime()} Curr iteration $k: $currIteration")
+      println(s"${printCurrentTime()} Next iteration ${k + 1}: $nextIteration")
       println("\n")
 
       if (hasReachedEnd(currIteration, nextIteration) || k >= 10000)

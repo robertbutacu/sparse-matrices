@@ -49,7 +49,7 @@ object LabRunner {
     //val m4 = sparseMatrixReader.readFromFile(m4Path, isWithVector = true, Simple, GaussSeidelMatrixType)
     //val m5 = sparseMatrixReader.readFromFile(m5Path, isWithVector = true, Simple, GaussSeidelMatrixType)
 
-    val m2Solution = LinearSystemSolver.solve(m2, Precision(3))
+    val m2Solution = LinearSystemSolver.solve(m2, Precision(2))
 
     println(m2Solution)
   }

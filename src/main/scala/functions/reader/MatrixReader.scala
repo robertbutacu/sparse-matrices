@@ -50,7 +50,7 @@ object MatrixReader {
       sorted = Row(noDoubleElements.index, noDoubleElements.values.sortBy(_.index))
     } yield sorted
 
-    println(s"${printCurrentTime()} finished processing")
+    println(s"${printCurrentTime()} Finished processing")
 
     println()
 
