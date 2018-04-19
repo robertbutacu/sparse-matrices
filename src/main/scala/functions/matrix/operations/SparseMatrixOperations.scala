@@ -17,7 +17,7 @@ trait SparseMatrixOperations[T[_], F] {
 
 object SparseMatrixOperations {
   def normalizeToSparseMatrix(values: List[Double]): SparseMatrix[Double] = {
-    val toRowValues = values.zipWithIndex.map{v =>
+    val toRowValues = values.zipWithIndex.map { v =>
       Row(v._2, List(RowValue(0, v._1 + 1.0)))
     }
     SparseMatrix(toRowValues, VectorType)

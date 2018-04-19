@@ -1,7 +1,5 @@
 package functions.matrix.operations.liniar.system.gauss.seidel
 
-import java.util
-
 import data.SparseMatrix
 import data.matrix.data.MatrixWithVector
 import functions.executor.CurrentTime.printCurrentTime
@@ -35,7 +33,7 @@ object LinearSystemSolver {
           valuesWithSolution = valuesWithoutDiagonal.map(p => (p, values(p.index)))
           sum = valuesWithSolution.foldRight(0.0)((curr, acc) => acc + curr._1.value * curr._2)
           vectorValue = vector(currentIndex)
-        } yield (( vectorValue - sum ) / rowValue.value, row._2)).head
+        } yield ((vectorValue - sum) / rowValue.value, row._2)).head
 
         val updatedApproximations =
           (values.slice(0, updatedValues._2) :+ updatedValues._1) ::: values.slice(updatedValues._2 + 1, values.length)
@@ -57,6 +55,7 @@ object LinearSystemSolver {
 
       println(s"${printCurrentTime()} Curr iteration $currIteration")
       println(s"${printCurrentTime()} Next iteration $nextIteration")
+      println("\n")
 
       if (hasReachedEnd(currIteration, nextIteration) || k >= 10000)
         nextIteration //either should be fine, nextIteration should be slightly more precise tho
@@ -65,7 +64,7 @@ object LinearSystemSolver {
       }
     }
 
-    println(s"${printCurrentTime()} Starting to solve the system.")
+    println(s"${printCurrentTime()} Starting to solve the system.\n")
     matrixWithVector.vector.map(v => go(matrixWithVector.matrix, v, List.fill(v.length)(0)))
   }
 }

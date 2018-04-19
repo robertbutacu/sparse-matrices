@@ -6,7 +6,7 @@ import data.matrix.data.row.{Row, RowValue, RowValueWithIndex}
 case class SparseMatrix[F: Fractional](rows: List[Row[F]],
                                        rowsType: RowsType = Simple,
                                        matrixType: MatrixType = SparseMatrixType) {
-  require(rows.forall(r => r.values.length <= RowsType.maximumLength(rowsType)) && MatrixType.isValid(this))
+  require(MatrixType.isValid(this))
 
   def maxByColumn: Int = rows.maxBy(_.values.length).values.length
 
@@ -31,6 +31,7 @@ object SparseMatrix {
   def equals(A: SparseMatrix[Double], B: SparseMatrix[Double]): Boolean = {
     def areElementsTheSame(f: List[RowValue[Double]], s: List[RowValue[Double]]): Boolean = {
       def round(n: Double) = Math.round(n * 100) / 100
+
       def areApproximatelyEqual(x: Double, y: Double) =
         (x == y) || ((x + 1.0) == y) || ((x - 1.0) == y)
 

@@ -1,6 +1,7 @@
 package functions.reader
 
 import data.matrix.data.row.{RowValue, RowValueWithIndex}
+import functions.executor.CurrentTime.printCurrentTime
 
 import scala.annotation.tailrec
 
@@ -32,7 +33,7 @@ object FileReader {
 
         val rowValue = RowValueWithIndex(rowValues(1).toInt, RowValue(rowValues(2).toInt, rowValues(0).toDouble))
 
-        if(currentIteration % 10000 == 0) {
+        if (currentIteration % 10000 == 0 && currentIteration > 0) {
           print("|")
           go(lines, matrixLines :+ rowValue, currentIteration + 1)
         }
@@ -40,6 +41,7 @@ object FileReader {
       }
     }
 
+    println(s"${printCurrentTime()} One | means 10k lines have been read.")
     go(lines, List.empty)
   }
 }
