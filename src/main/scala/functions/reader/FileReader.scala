@@ -24,9 +24,7 @@ object FileReader {
     def go(lines: Iterator[String],
            matrixLines: List[RowValueWithIndex[Double]],
            currentIteration: Int = 0): List[RowValueWithIndex[Double]] = {
-      if (!lines.hasNext)
-        matrixLines
-      else {
+      if (lines.hasNext) {
         val currLine = lines.next()
 
         val rowValues = currLine.split(", ")
@@ -39,6 +37,7 @@ object FileReader {
         }
         else go(lines, matrixLines :+ rowValue, currentIteration + 1)
       }
+      else matrixLines
     }
 
     println(s"${printCurrentTime()} One | means 10k lines have been read.")
