@@ -1,24 +1,24 @@
 package functions.reader
 
 import data._
-import data.matrix.data.row.{Row, RowValue, RowValueWithIndex}
+import data.matrix.data.row.{Row, RowValue}
 import data.matrix.data.{MatrixWithVector, row}
 import functions.executor.CurrentTime.printCurrentTime
-
-import scala.annotation.tailrec
-import scala.io.Source
 import functions.reader.FileReader._
+
+import scala.io.Source
 
 trait MatrixReader[F] {
   def readFromFile(filename: String, isWithVector: Boolean, rowsType: RowsType,
-                   matrixType: MatrixType = SparseMatrixType): MatrixWithVector[F]
+                   matrixType: MatrixType = SparseMatrixType, isDiagonalElementOnLastPosition: Boolean = false): MatrixWithVector[F]
 }
 
 object MatrixReader {
   def sparseMatrixReader: MatrixReader[Double] = (filename: String,
                                                   isWithVector: Boolean,
                                                   rowsType: RowsType,
-                                                  matrixType: MatrixType) => {
+                                                  matrixType: MatrixType,
+                                                  isDiagonalElementOnLastPosition: Boolean) => {
     println(s"${printCurrentTime()} Started reading the matrix")
 
     val lines = Source.fromFile(filename).getLines()
@@ -48,7 +48,7 @@ object MatrixReader {
       transformedRow = Row(row.head.rowIndex, row.map(_.value))
       noDoubleElements = addSameElements(transformedRow)
       sorted = Row(noDoubleElements.index, noDoubleElements.values.sortBy(_.index))
-    } yield sorted
+    } yield if(isDiagonalElementOnLastPosition) moveDiagonalElement(sorted) else sorted
 
     println(s"${printCurrentTime()} Finished processing")
 

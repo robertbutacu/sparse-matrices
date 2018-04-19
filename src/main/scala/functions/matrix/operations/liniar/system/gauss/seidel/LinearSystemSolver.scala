@@ -54,8 +54,7 @@ object LinearSystemSolver {
       val nextIteration = iterate(matrix, vector, currIteration)
 
       println(s"${printCurrentTime()} Curr iteration $k: $currIteration")
-      println(s"${printCurrentTime()} Next iteration ${k + 1}: $nextIteration")
-      println("\n")
+      println(s"${printCurrentTime()} Next iteration ${k + 1}: $nextIteration\n")
 
       if (hasReachedEnd(currIteration, nextIteration) || k >= 10000)
         nextIteration //either should be fine, nextIteration should be slightly more precise tho
