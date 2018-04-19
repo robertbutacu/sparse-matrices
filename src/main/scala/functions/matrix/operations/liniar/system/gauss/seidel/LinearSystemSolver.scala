@@ -1,7 +1,10 @@
 package functions.matrix.operations.liniar.system.gauss.seidel
 
+import java.util
+
 import data.SparseMatrix
 import data.matrix.data.MatrixWithVector
+import functions.executor.CurrentTime.printCurrentTime
 
 import scala.annotation.tailrec
 
@@ -52,8 +55,8 @@ object LinearSystemSolver {
            k: Int = 1): List[Double] = {
       val nextIteration = iterate(matrix, vector, currIteration)
 
-      println(" Curr iteration " + currIteration)
-      println(" Next iteration " + nextIteration)
+      println(s"${printCurrentTime()} Curr iteration $currIteration")
+      println(s"${printCurrentTime()} Next iteration $nextIteration")
 
       if (hasReachedEnd(currIteration, nextIteration) || k >= 10000)
         nextIteration //either should be fine, nextIteration should be slightly more precise tho
@@ -62,6 +65,7 @@ object LinearSystemSolver {
       }
     }
 
+    println(s"${printCurrentTime()} Starting to solve the system.")
     matrixWithVector.vector.map(v => go(matrixWithVector.matrix, v, List.fill(v.length)(0)))
   }
 }

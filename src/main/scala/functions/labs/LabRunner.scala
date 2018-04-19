@@ -1,8 +1,10 @@
 package functions.labs
 
+import data.matrix.data.MatrixWithVector
 import data.{GaussSeidelMatrixType, Simple, SparseMatrix}
 import functions.executor.CurrentTime.printCurrentTime
 import functions.executor.OperationExecutor.{addMatrices, multiplyMatrices, multiplyWithVector}
+import functions.matrix.operations.liniar.system.gauss.seidel.{LinearSystemSolver, Precision}
 import functions.reader.MatrixReader.sparseMatrixReader
 
 object LabRunner {
@@ -47,5 +49,8 @@ object LabRunner {
     //val m4 = sparseMatrixReader.readFromFile(m4Path, isWithVector = true, Simple, GaussSeidelMatrixType)
     //val m5 = sparseMatrixReader.readFromFile(m5Path, isWithVector = true, Simple, GaussSeidelMatrixType)
 
+    val m2Solution = LinearSystemSolver.solve(m2, Precision(3))
+
+    println(m2Solution)
   }
 }
