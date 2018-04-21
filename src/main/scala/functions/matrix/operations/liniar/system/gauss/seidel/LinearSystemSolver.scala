@@ -2,6 +2,7 @@ package functions.matrix.operations.liniar.system.gauss.seidel
 
 import data.SparseMatrix
 import data.matrix.data.MatrixWithVector
+import data.matrix.data.row.{Row, RowValue}
 import functions.executor.CurrentTime.printCurrentTime
 
 import scala.annotation.tailrec
@@ -21,10 +22,48 @@ object LinearSystemSolver {
                 vector: List[Double],
                 values: List[Double],
                 currentIndex: Int = 0): List[Double] = {
+      def currentRow: Option[(Row[Double], Int)] = {
+        val row = matrix.rows
+          .zipWithIndex
+          .dropWhile(_._2 < currentIndex).head
+
+        if (row._2 == currentIndex) Some(row)
+        else None
+      }
+
+      def currentValue(currentRow: Option[(Row[Double], Int)]): Option[RowValue[Double]] = {
+        currentRow match {
+          case Some(row) =>
+            val currValue = row._1.values.dropWhile(_.index < currentIndex).head
+
+            if(currValue.index == currentIndex) Some(currValue)
+            else None
+          case None => None
+        }
+      }
+
+
       if (currentIndex == values.length)
         values
       else {
-        val updatedValues = (for {
+        val currRow = currentRow
+        val currVal = currentValue(currRow)
+
+        val valuesWithoutCurr = currRow.map(r => r._1.values.filterNot(_.index == currentIndex))
+        val valuesWithSolutions = valuesWithoutCurr.map(r => r.map(rv => (rv, values(rv.index))))
+        val sum = valuesWithSolutions.map(r => r.foldRight(0.0)((curr, acc) => acc + curr._1.value * curr._2))
+        val vectorValue = vector(currentIndex)
+        (sum, currVal, currRow) match {
+          case (Some(s), Some(v), Some(r)) =>
+            val updatedValue = ((vectorValue - s) / v.value, r._2)
+            val updatedApproximations =
+              (values.slice(0, updatedValue._2) :+ updatedValue._1) ::: values.slice(updatedValue._2 + 1, values.length)
+
+            iterate(matrix, vector, updatedApproximations, currentIndex + 1)
+          case (_, _, _) => List.empty
+        }
+
+        /*val updatedValues = (for {
           row <- matrix.rows.zipWithIndex
           if row._1.index == currentIndex
           rowValue <- row._1.values
@@ -38,7 +77,7 @@ object LinearSystemSolver {
         val updatedApproximations =
           (values.slice(0, updatedValues._2) :+ updatedValues._1) ::: values.slice(updatedValues._2 + 1, values.length)
 
-        iterate(matrix, vector, updatedApproximations, currentIndex + 1)
+        iterate(matrix, vector, updatedApproximations, currentIndex + 1)*/
       }
     }
 
