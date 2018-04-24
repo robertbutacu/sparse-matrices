@@ -8,6 +8,8 @@ import functions.executor.CurrentTime.printCurrentTime
 import scala.annotation.tailrec
 
 object LinearSystemSolver {
+  case class IterationResult(solution: List[Double] = List.empty, norm: Double = 0.0)
+
   def solve(matrixWithVector: MatrixWithVector[Double], precision: Precision): Option[List[Double]] = {
     /**
       *
@@ -21,7 +23,8 @@ object LinearSystemSolver {
     def iterate(matrix: SparseMatrix[Double],
                 vector: List[Double],
                 values: List[Double],
-                currentIndex: Int = 0): List[Double] = {
+                currentIndex: Int = 0,
+                currentSum: Double = 0.0): IterationResult = {
       def currentRow: Option[(Row[Double], Int)] = {
         val row = matrix.rows
           .zipWithIndex
@@ -42,9 +45,8 @@ object LinearSystemSolver {
         }
       }
 
-
       if (currentIndex == values.length)
-        values
+        IterationResult(values, Math.sqrt(currentSum))
       else {
         val currRow = currentRow
         val currVal = currentValue(currRow)
@@ -59,8 +61,12 @@ object LinearSystemSolver {
             val updatedApproximations =
               (values.slice(0, updatedValue._2) :+ updatedValue._1) ::: values.slice(updatedValue._2 + 1, values.length)
 
-            iterate(matrix, vector, updatedApproximations, currentIndex + 1)
-          case (_, _, _) => List.empty
+            iterate(matrix,
+              vector,
+              updatedApproximations,
+              currentIndex + 1,
+              currentSum + Math.abs(updatedValue._1 - v.value))
+          case (_, _, _) => IterationResult()
         }
 
         /*val updatedValues = (for {
@@ -81,8 +87,9 @@ object LinearSystemSolver {
       }
     }
 
-    def hasReachedEnd(pi: List[Double], ci: List[Double]): Boolean =
-      pi.zip(ci).forall(p => Math.abs(p._1 - p._2) <= precision.value) || pi.zip(ci).forall(p => p._1 == p._2)
+    def hasReachedEnd(precision: Precision, ci: Double): Boolean =
+      precision.value < ci
+    //pi.zip(ci).forall(p => Math.abs(p._1 - p._2) <= precision.value) || pi.zip(ci).forall(p => p._1 == p._2)
 
     @tailrec
     def go(matrix: SparseMatrix[Double],
@@ -93,11 +100,12 @@ object LinearSystemSolver {
 
       println(s"${printCurrentTime()} Curr iteration $k: $currIteration")
       println(s"${printCurrentTime()} Next iteration ${k + 1}: $nextIteration\n")
+      println(s"Current norm: ${nextIteration.norm}")
 
-      if (hasReachedEnd(currIteration, nextIteration) || k >= 10000)
-        nextIteration //either should be fine, nextIteration should be slightly more precise tho
+      if (hasReachedEnd(precision, nextIteration.norm) || k >= 10000)
+        nextIteration.solution //either should be fine, nextIteration should be slightly more precise tho
       else {
-        go(matrix, vector, nextIteration, k + 1)
+        go(matrix, vector, nextIteration.solution, k + 1)
       }
     }
 
