@@ -12,7 +12,7 @@ trait SparseMatrixOperations[T[_], F] {
 
   def +++(A: T[F], B: T[F]): T[F]
 
-  def ***(A: T[F], b: List[F]): List[F]
+  def ***(A: T[F], b: List[F]): SparseMatrix[F]
 
   def applyOperation(A: T[F], B: T[F], op: (F, F) => F): T[F]
 }
@@ -109,8 +109,8 @@ object SparseMatrixOperations {
       SparseMatrix(go(A.rows, B.rows, List.empty), AdditionResult)
     }
 
-    override def ***(A: SparseMatrix[Double], b: List[Double]): List[Double] =
-      sparseMatrixOperations.***(A, normalizeToSparseMatrix(b)).rows.head.values.map(_.value)
+    override def ***(A: SparseMatrix[Double], b: List[Double]): SparseMatrix[Double] =
+      sparseMatrixOperations.***(A, normalizeToSparseMatrix(b))
 
     override def applyOperation(A: SparseMatrix[Double],
                                 B: SparseMatrix[Double],

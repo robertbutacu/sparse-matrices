@@ -81,9 +81,8 @@ object LinearSystemSolver {
       }
     }
 
-    def hasReachedEnd(pi: List[Double], ci: List[Double]): Boolean = {
-      pi.zip(ci).forall(p => Math.abs(p._1 - p._2) <= precision.value)
-    }
+    def hasReachedEnd(pi: List[Double], ci: List[Double]): Boolean =
+      pi.zip(ci).forall(p => Math.abs(p._1 - p._2) <= precision.value) || pi.zip(ci).forall(p => p._1 == p._2)
 
     @tailrec
     def go(matrix: SparseMatrix[Double],

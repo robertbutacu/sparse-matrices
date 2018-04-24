@@ -50,18 +50,23 @@ object LabRunner {
     //val m4 = sparseMatrixReader.readFromFile(m4Path, isWithVector = true, Simple, GaussSeidelMatrixType)
     //val m5 = sparseMatrixReader.readFromFile(m5Path, isWithVector = true, Simple, GaussSeidelMatrixType)
 
-    val m2Solution = LinearSystemSolver.solve(m2, Precision(2))
+    val precision = Precision(2)
+    val m2Solution = LinearSystemSolver.solve(m2, precision)
 
     m2Solution match {
       case None => println("Divergence")
       case Some(solution) =>
         //||A * Xgs - B||
         // ||m2 * m2Solution - b||
-        val multiplicationResult = sparseMatrixOperations.***(m2.matrix, solution).rows.head
+        val multiplicationResult = sparseMatrixOperations.***(m2.matrix, solution).rows.head.values.map(_.value)
 
         val vector = m2.vector.get
 
-        val result = implicitly[Numeric[Double]].minus
+        val result = multiplicationResult.zip(vector).map(p => Math.abs(p._1 - p._2))
+
+        val norm = result.forall(p => p <= precision.value)
+
+        println(norm)
     }
   }
 }
