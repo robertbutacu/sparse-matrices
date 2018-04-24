@@ -6,6 +6,7 @@ import functions.executor.CurrentTime.printCurrentTime
 import functions.executor.OperationExecutor.{addMatrices, multiplyMatrices, multiplyWithVector}
 import functions.matrix.operations.liniar.system.gauss.seidel.{LinearSystemSolver, Precision}
 import functions.reader.MatrixReader.sparseMatrixReader
+import functions.matrix.operations.SparseMatrixOperations._
 
 object LabRunner {
   def runLab4(): Unit = {
@@ -51,6 +52,16 @@ object LabRunner {
 
     val m2Solution = LinearSystemSolver.solve(m2, Precision(2))
 
-    println(m2Solution)
+    m2Solution match {
+      case None => println("Divergence")
+      case Some(solution) =>
+        //||A * Xgs - B||
+        // ||m2 * m2Solution - b||
+        val multiplicationResult = sparseMatrixOperations.***(m2.matrix, solution).rows.head
+
+        val vector = m2.vector.get
+
+        val result = implicitly[Numeric[Double]].minus
+    }
   }
 }
