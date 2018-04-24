@@ -13,6 +13,8 @@ trait SparseMatrixOperations[T[_], F] {
   def +++(A: T[F], B: T[F]): T[F]
 
   def ***(A: T[F], b: List[F]): T[F]
+
+  def applyOperation(A: T[F], B: T[F], op: (F, F) => F): T[F]
 }
 
 object SparseMatrixOperations {
@@ -109,5 +111,46 @@ object SparseMatrixOperations {
 
     override def ***(A: SparseMatrix[Double], b: List[Double]): SparseMatrix[Double] =
       sparseMatrixOperations.***(A, normalizeToSparseMatrix(b))
+
+    override def applyOperation(A: SparseMatrix[Double],
+                                B: SparseMatrix[Double],
+                                op: (Double, Double) => Double): SparseMatrix[Double] = {
+      @tailrec
+      def go[F: Fractional](firstMatrixRows: List[Row[F]],
+                            secondMatrixRows: List[Row[F]],
+                            result: List[Row[F]],
+                            op: (F, F) => F): List[Row[F]] = {
+        (firstMatrixRows.isEmpty, secondMatrixRows.isEmpty) match {
+          case (true, true) => result
+          case (false, true) => result ::: firstMatrixRows
+          case (true, false) => result ::: secondMatrixRows
+          case (false, false) =>
+            val currHeadFirst = firstMatrixRows.head
+            val currHeadSecond = secondMatrixRows.head
+
+            (currHeadFirst.index, currHeadSecond.index) match {
+              case (i, j) if i == j =>
+                val groupedElements = (currHeadFirst.values ::: currHeadSecond.values)
+                  .groupBy(_.index)
+                  .values
+                  .toList
+
+                val newElements = groupedElements.map(r => r.reduce {
+                  (el1, el2) =>
+                    RowValue(el1.index, op(el1.value, el2.value))
+                })
+
+                val newRow = row.Row(currHeadFirst.index, newElements.sortBy(_.index))
+                go(firstMatrixRows.tail, secondMatrixRows.tail, result :+ newRow, op)
+              case (i, j) if i < j =>
+                go(firstMatrixRows.tail, secondMatrixRows, result :+ firstMatrixRows.head, op)
+              case (i, j) if i > j =>
+                go(firstMatrixRows, secondMatrixRows.tail, result :+ secondMatrixRows.head, op)
+            }
+        }
+      }
+
+      SparseMatrix(go(A.rows, B.rows, List.empty, op), FunctionApplicationResult)
+    }
   }
 }

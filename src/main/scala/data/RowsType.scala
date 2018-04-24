@@ -4,6 +4,7 @@ trait RowsType
 
 case object Simple extends RowsType
 case object AdditionResult extends RowsType
+case object FunctionApplicationResult extends RowsType
 case object MultiplicationResult extends RowsType
 case object VectorType extends RowsType
 
