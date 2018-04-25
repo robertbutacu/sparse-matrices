@@ -59,14 +59,13 @@ object LabRunner {
         //||A * Xgs - B||
         // ||m2 * m2Solution - b||
         val multiplicationResult = sparseMatrixOperations.***(m2.matrix, solution)
-        //.rows.head.values.map(_.value)
+          .rows.map(_.values.head.value)
 
         val vector = m2.vector.get
 
-       // val result2 = result.zip(vector).map(p => Math.abs(p._1 - p._2))
-      //      val norm = result.max
+        val norm = multiplicationResult.zip(vector).map(v => Math.abs(v._1 - v._2)).max
 
-      //     println(norm)
+        println(s"${printCurrentTime()} Norm is: ${norm}")
     }
   }
 }
