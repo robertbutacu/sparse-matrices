@@ -103,8 +103,8 @@ object LinearSystemSolver {
         if(previousIterations.exists(pi => pi.zip(nextIteration).forall(p => Math.abs(p._1 - p._2) <= precision.value)))
           None
         else {
-          if(previousIterations.length == 5)
-            go(matrix, vector, nextIteration, k + 1, previousIterations.slice(0, 3) :+ nextIteration)
+          if(previousIterations.length == 10)
+            go(matrix, vector, nextIteration, k + 1, previousIterations.slice(0, 8) :+ nextIteration)
           else
             go(matrix, vector, nextIteration, k + 1, previousIterations :+ nextIteration)
         }

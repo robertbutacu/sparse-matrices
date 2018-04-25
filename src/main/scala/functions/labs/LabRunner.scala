@@ -51,7 +51,7 @@ object LabRunner {
     //val m5 = sparseMatrixReader.readFromFile(m5Path, isWithVector = true, Simple, GaussSeidelMatrixType)
 
     val precision = Precision(4)
-    val m2Solution = LinearSystemSolver.solve(m2, precision)
+    val m2Solution = LinearSystemSolver.solve(m2, precision, 1000)
 
     m2Solution match {
       case None => println("Divergence")
