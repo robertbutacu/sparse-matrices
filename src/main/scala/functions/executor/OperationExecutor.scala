@@ -39,8 +39,9 @@ object OperationExecutor {
     println("\n")
 
     println(s"${printCurrentTime()} Started multiplying matrix with vector")
-    val aVector = (m1.rows.maxBy(_.index).index to 0 by -1).toList.map(_.toDouble)
+    val aVector = (2018 to 0 by -1).toList.map(_.toDouble)
     val aTimesVector = sparseMatrixOperations.***(m1, aVector)
+
     println(s"${printCurrentTime()} Finished multiplying")
 
     println("Checking equality")

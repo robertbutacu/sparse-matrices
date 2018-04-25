@@ -12,7 +12,7 @@ trait SparseMatrixOperations[T[_], F] {
 
   def +++(A: T[F], B: T[F]): T[F]
 
-  def ***(A: T[F], b: List[F]): SparseMatrix[F]
+  def ***(A: T[F], b: List[F]): T[F]
 
   def applyOperation(A: T[F], B: T[F], op: (F, F) => F): T[F]
 }
@@ -20,7 +20,7 @@ trait SparseMatrixOperations[T[_], F] {
 object SparseMatrixOperations {
   def normalizeToSparseMatrix(values: List[Double]): SparseMatrix[Double] = {
     val toRowValues = values.zipWithIndex.map { v =>
-      Row(v._2, List(RowValue(0, v._1 + 1.0)))
+      Row(v._2, List(RowValue(0, v._1)))
     }
     SparseMatrix(toRowValues, VectorType)
   }

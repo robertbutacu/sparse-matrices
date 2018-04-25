@@ -33,7 +33,7 @@ object SparseMatrix {
       def round(n: Double) = Math.round(n * 100) / 100
 
       def areApproximatelyEqual(x: Double, y: Double) =
-        (x == y) || ((x + 1.0) == y) || ((x - 1.0) == y)
+        x == y
 
       f.zip(s).forall(p => p._1.index == p._2.index && areApproximatelyEqual(round(p._1.value), round(p._2.value)))
     }
