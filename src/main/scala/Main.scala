@@ -19,5 +19,6 @@ object Main extends App {
   println(sparseMatrixOperations.***(matrix, solution.get))*/
   //println(sparseMatrixOperations.applyOperation(matrix, matrix, implicitly[Fractional[Double]].minus))
 
-  LabRunner.runLab5()
+  LabRunner.runLab4()
+  //LabRunner.runLab5()
 }

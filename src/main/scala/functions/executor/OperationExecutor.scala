@@ -1,9 +1,11 @@
 package functions.executor
 
-import data.SparseMatrix
+import data.{MultiplicationResult, SparseMatrix}
 import functions.matrix.operations.SparseMatrixOperations._
 import functions.executor.CurrentTime.printCurrentTime
 import functions.matrix.operations.SparseMatrixOperations
+import functions.matrix.operations.liniar.system.gauss.seidel.Precision
+import functions.reader.MatrixReader.sparseMatrixReader
 
 object OperationExecutor {
   def multiplyMatrices(m1: SparseMatrix[Double],
@@ -11,9 +13,15 @@ object OperationExecutor {
                        expectedResult: SparseMatrix[Double]): Unit = {
     println()
 
-    println(s"""${printCurrentTime()} Multiplying matrices """)
-    val atimesbActual = sparseMatrixOperations.***(m1, m2)
+    println(s"${printCurrentTime()} Multiplying matrices")
+    val atimesBActual = sparseMatrixOperations.***(m1, m2)
     println(s"[${printCurrentTime()}] Finished multiplying")
+
+    val atimesBExpected = sparseMatrixReader.readFromFile("E:\\projects\\sparse-matrices\\resources\\atimesb.txt",
+      isWithVector = true, MultiplicationResult)
+
+    println(SparseMatrix.areEqual(atimesBActual, atimesBExpected.matrix, Precision(6)))
+
 
     //println(s"""Checking equality ${printCurrentTime()}""")
     //println(SparseMatrix.equals(atimesbActual, expectedResult))
@@ -46,6 +54,6 @@ object OperationExecutor {
 
     println("Checking equality")
     val vectorA = SparseMatrixOperations.normalizeToSparseMatrix(expectedResult)
-    println(SparseMatrix.equals(aTimesVector, vectorA))
+    println(SparseMatrix.areEqual(aTimesVector, vectorA, Precision(3)))
   }
 }

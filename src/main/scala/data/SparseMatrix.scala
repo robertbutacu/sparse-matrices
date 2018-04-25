@@ -2,6 +2,7 @@ package data
 
 import data.matrix.data.column.{Column, ColumnValue}
 import data.matrix.data.row.{Row, RowValue, RowValueWithIndex}
+import functions.matrix.operations.liniar.system.gauss.seidel.Precision
 
 case class SparseMatrix[F: Fractional](rows: List[Row[F]],
                                        rowsType: RowsType = Simple,
@@ -28,9 +29,9 @@ case class SparseMatrix[F: Fractional](rows: List[Row[F]],
 }
 
 object SparseMatrix {
-  def equals(A: SparseMatrix[Double], B: SparseMatrix[Double]): Boolean = {
+  def areEqual(A: SparseMatrix[Double], B: SparseMatrix[Double], precision: Precision): Boolean = {
     def areElementsTheSame(f: List[RowValue[Double]], s: List[RowValue[Double]]): Boolean = {
-      def round(n: Double) = Math.round(n * 100) / 100
+      def round(n: Double) = Math.round(n * 10 * precision.magnitude) / 10 * precision.magnitude
 
       def areApproximatelyEqual(x: Double, y: Double) =
         x == y

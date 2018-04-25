@@ -1,7 +1,7 @@
 package functions.labs
 
 import data.matrix.data.MatrixWithVector
-import data.{GaussSeidelMatrixType, Simple, SparseMatrix}
+import data.{GaussSeidelMatrixType, MultiplicationResult, Simple, SparseMatrix}
 import functions.executor.CurrentTime.printCurrentTime
 import functions.executor.OperationExecutor.{addMatrices, multiplyMatrices, multiplyWithVector}
 import functions.matrix.operations.liniar.system.gauss.seidel.{LinearSystemSolver, Precision}
@@ -20,9 +20,6 @@ object LabRunner {
     val aVector = a.vector.get
     val b = sparseMatrixReader.readFromFile(bPath, isWithVector = true, Simple)
     val bVector = b.vector.get
-
-    //val aplusbExpected = sparseMatrixReader.readFromFile(aplusbPath, isWithVector = true, AdditionResult)
-    //val atimesbExpected = sparseMatrixReader.readFromFile(atimesbPath, isWithVector = true, MultiplicationResult)
 
     //multiplyMatrices(a.matrix, b.matrix, atimesbExpected)
     multiplyMatrices(a.matrix, b.matrix, SparseMatrix(List.empty, Simple))
@@ -45,7 +42,7 @@ object LabRunner {
     val m5Path = "E:\\projects\\sparse-matrices\\resources\\gauss-seidel\\m5.txt"
 
     //val m1 = sparseMatrixReader.readFromFile(m1Path, isWithVector = true, Simple, GaussSeidelMatrixType)
-    val m2 = sparseMatrixReader.readFromFile(m5Path, isWithVector = true, Simple, GaussSeidelMatrixType)
+    val m2 = sparseMatrixReader.readFromFile(m2Path, isWithVector = true, Simple, GaussSeidelMatrixType)
     //val m3 = sparseMatrixReader.readFromFile(m3Path, isWithVector = true, Simple, GaussSeidelMatrixType)
     //val m4 = sparseMatrixReader.readFromFile(m4Path, isWithVector = true, Simple, GaussSeidelMatrixType)
     //val m5 = sparseMatrixReader.readFromFile(m5Path, isWithVector = true, Simple, GaussSeidelMatrixType)
