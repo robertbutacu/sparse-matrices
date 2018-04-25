@@ -45,19 +45,17 @@ object LabRunner {
     val m5Path = "E:\\projects\\sparse-matrices\\resources\\gauss-seidel\\m5.txt"
 
     //val m1 = sparseMatrixReader.readFromFile(m1Path, isWithVector = true, Simple, GaussSeidelMatrixType)
-    val m2 = sparseMatrixReader.readFromFile(m2Path, isWithVector = true, Simple, GaussSeidelMatrixType)
+    val m2 = sparseMatrixReader.readFromFile(m5Path, isWithVector = true, Simple, GaussSeidelMatrixType)
     //val m3 = sparseMatrixReader.readFromFile(m3Path, isWithVector = true, Simple, GaussSeidelMatrixType)
     //val m4 = sparseMatrixReader.readFromFile(m4Path, isWithVector = true, Simple, GaussSeidelMatrixType)
     //val m5 = sparseMatrixReader.readFromFile(m5Path, isWithVector = true, Simple, GaussSeidelMatrixType)
 
-    val precision = Precision(2)
+    val precision = Precision(4)
     val m2Solution = LinearSystemSolver.solve(m2, precision)
 
     m2Solution match {
       case None => println("Divergence")
       case Some(solution) =>
-        //||A * Xgs - B||
-        // ||m2 * m2Solution - b||
         val multiplicationResult = sparseMatrixOperations.***(m2.matrix, solution)
           .rows.map(_.values.head.value)
 
@@ -65,7 +63,7 @@ object LabRunner {
 
         val norm = multiplicationResult.zip(vector).map(v => Math.abs(v._1 - v._2)).max
 
-        println(s"${printCurrentTime()} Norm is: ${norm}")
+        println(s"${printCurrentTime()} Norm is: $norm")
     }
   }
 }

@@ -8,7 +8,7 @@ import functions.executor.CurrentTime.printCurrentTime
 import scala.annotation.tailrec
 
 object LinearSystemSolver {
-  def solve(matrixWithVector: MatrixWithVector[Double], precision: Precision): Option[List[Double]] = {
+  def solve(matrixWithVector: MatrixWithVector[Double], precision: Precision, maxIterations: Int = 10): Option[List[Double]] = {
     /**
       *
       * @param matrix       - ???
@@ -89,20 +89,32 @@ object LinearSystemSolver {
     def go(matrix: SparseMatrix[Double],
            vector: List[Double],
            currIteration: List[Double],
-           k: Int = 1): List[Double] = {
+           k: Int = 1,
+           previousIterations: List[List[Double]]): Option[List[Double]] = {
       val nextIteration = iterate(matrix, vector, currIteration)
 
       println(s"${printCurrentTime()} Curr iteration $k: $currIteration")
       println(s"${printCurrentTime()} Next iteration ${k + 1}: $nextIteration\n")
 
-      if (hasReachedEnd(currIteration, nextIteration) || k >= 10000)
-        nextIteration //either should be fine, nextIteration should be slightly more precise tho
+      if (hasReachedEnd(currIteration, nextIteration) || k >= maxIterations)
+        if(k >= maxIterations) None
+        else Some(nextIteration) //either should be fine, nextIteration should be slightly more precise tho
       else {
-        go(matrix, vector, nextIteration, k + 1)
+        if(previousIterations.exists(pi => pi.zip(nextIteration).forall(p => Math.abs(p._1 - p._2) <= precision.value)))
+          None
+        else {
+          if(previousIterations.length == 5)
+            go(matrix, vector, nextIteration, k + 1, previousIterations.slice(0, 3) :+ nextIteration)
+          else
+            go(matrix, vector, nextIteration, k + 1, previousIterations :+ nextIteration)
+        }
       }
     }
 
     println(s"${printCurrentTime()} Starting to solve the system.\n")
-    matrixWithVector.vector.map(v => go(matrixWithVector.matrix, v, List.fill(v.length)(0)))
+    matrixWithVector.vector match {
+      case None => None
+      case Some(v) => go(matrixWithVector.matrix, v, List.fill(v.length)(0), 0, List.empty[List[Double]])
+    }
   }
 }
