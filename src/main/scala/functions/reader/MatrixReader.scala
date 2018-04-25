@@ -48,7 +48,7 @@ object MatrixReader {
       transformedRow = Row(row.head.rowIndex, row.map(_.value))
       noDoubleElements = addSameElements(transformedRow)
       sorted = Row(noDoubleElements.index, noDoubleElements.values.sortBy(_.index))
-    } yield if(isDiagonalElementOnLastPosition) moveDiagonalElement(sorted) else sorted
+    } yield if (isDiagonalElementOnLastPosition) moveDiagonalElement(sorted) else sorted
 
     println(s"${printCurrentTime()} Finished processing")
 

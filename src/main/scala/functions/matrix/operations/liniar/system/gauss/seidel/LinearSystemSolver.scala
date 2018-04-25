@@ -36,7 +36,7 @@ object LinearSystemSolver {
           case Some(row) =>
             val currValue = row._1.values.dropWhile(_.index < currentIndex).head
 
-            if(currValue.index == currentIndex) Some(currValue)
+            if (currValue.index == currentIndex) Some(currValue)
             else None
           case None => None
         }
@@ -97,13 +97,13 @@ object LinearSystemSolver {
       println(s"${printCurrentTime()} Next iteration ${k + 1}: $nextIteration\n")
 
       if (hasReachedEnd(currIteration, nextIteration) || k >= maxIterations)
-        if(k >= maxIterations) None
+        if (k >= maxIterations) None
         else Some(nextIteration) //either should be fine, nextIteration should be slightly more precise tho
       else {
-        if(previousIterations.exists(pi => pi.zip(nextIteration).forall(p => Math.abs(p._1 - p._2) <= precision.value)))
+        if (previousIterations.exists(pi => pi.zip(nextIteration).forall(p => Math.abs(p._1 - p._2) <= precision.value)))
           None
         else {
-          if(previousIterations.length == 10)
+          if (previousIterations.length == 10)
             go(matrix, vector, nextIteration, k + 1, previousIterations.slice(0, 8) :+ nextIteration)
           else
             go(matrix, vector, nextIteration, k + 1, previousIterations :+ nextIteration)
