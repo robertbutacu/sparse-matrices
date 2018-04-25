@@ -56,6 +56,8 @@ object LabRunner {
     m2Solution match {
       case None => println("Divergence")
       case Some(solution) =>
+        println(s"${printCurrentTime()} Started computing the norm")
+
         val multiplicationResult = sparseMatrixOperations.***(m2.matrix, solution)
           .rows.map(_.values.head.value)
 
