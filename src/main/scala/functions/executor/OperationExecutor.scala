@@ -11,20 +11,21 @@ object OperationExecutor {
   def multiplyMatrices(m1: SparseMatrix[Double],
                        m2: SparseMatrix[Double],
                        expectedResult: SparseMatrix[Double]): Unit = {
+
+    lazy val aTimesBPath = "E:\\projects\\sparse-matrices\\resources\\atimesb.txt"
+
     println()
 
     println(s"${printCurrentTime()} Multiplying matrices")
+
     val atimesBActual = sparseMatrixOperations.***(m1, m2)
+
     println(s"[${printCurrentTime()}] Finished multiplying")
 
-    val atimesBExpected = sparseMatrixReader.readFromFile("E:\\projects\\sparse-matrices\\resources\\atimesb.txt",
+    val atimesBExpected = sparseMatrixReader.readFromFile(aTimesBPath,
       isWithVector = true, MultiplicationResult)
 
     println(SparseMatrix.areEqual(atimesBActual, atimesBExpected.matrix, Precision(6)))
-
-
-    //println(s"""Checking equality ${printCurrentTime()}""")
-    //println(SparseMatrix.equals(atimesbActual, expectedResult))
   }
 
   def addMatrices(m1: SparseMatrix[Double],
@@ -33,12 +34,10 @@ object OperationExecutor {
     println()
 
     println(s"""${printCurrentTime()} Starting adding matrices""")
+
     val aplusbActual = sparseMatrixOperations.+++(m1, m2)
+
     println(s"""${printCurrentTime()} Finished adding""")
-
-
-    //println("Checking equality")
-    //println(SparseMatrix.equals(aplusbActual, expectedResult))
   }
 
   def multiplyWithVector(m1: SparseMatrix[Double],
