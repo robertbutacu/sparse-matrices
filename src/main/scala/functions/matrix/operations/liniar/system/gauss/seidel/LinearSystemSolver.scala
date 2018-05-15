@@ -26,7 +26,6 @@ object LinearSystemSolver {
         val row = matrix.rows
           .zipWithIndex
           .dropWhile(_._2 < currentIndex).head
-
         if (row._2 == currentIndex) Some(row)
         else None
       }
@@ -62,22 +61,6 @@ object LinearSystemSolver {
             iterate(matrix, vector, updatedApproximations, currentIndex + 1)
           case (_, _, _) => List.empty
         }
-
-        /*val updatedValues = (for {
-          row <- matrix.rows.zipWithIndex
-          if row._1.index == currentIndex
-          rowValue <- row._1.values
-          if rowValue.index == currentIndex
-          valuesWithoutDiagonal = row._1.values.filterNot(_.index == currentIndex)
-          valuesWithSolution = valuesWithoutDiagonal.map(p => (p, values(p.index)))
-          sum = valuesWithSolution.foldRight(0.0)((curr, acc) => acc + curr._1.value * curr._2)
-          vectorValue = vector(currentIndex)
-        } yield ((vectorValue - sum) / rowValue.value, row._2)).head
-
-        val updatedApproximations =
-          (values.slice(0, updatedValues._2) :+ updatedValues._1) ::: values.slice(updatedValues._2 + 1, values.length)
-
-        iterate(matrix, vector, updatedApproximations, currentIndex + 1)*/
       }
     }
 
