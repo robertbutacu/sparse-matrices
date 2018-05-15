@@ -11,7 +11,7 @@ case class SparseMatrix[F: Fractional](rows: List[Row[F]],
 
   def maxByColumn: Int = rows.maxBy(_.values.length).values.length
 
-  val asColumns: List[Column[F]] = {
+  val transpose: List[Column[F]] = {
     val allElements = for {
       row <- rows
       value <- row.values

@@ -6,6 +6,7 @@ import data.matrix.data.row.{Row, RowValue, RowValueWithIndex}
 import data.matrix.data.{MatrixElement, row}
 
 import scala.annotation.tailrec
+import scala.language.higherKinds
 
 trait SparseMatrixOperations[T[_], F] {
   def ***(A: T[F], B: T[F]): T[F]
@@ -68,7 +69,7 @@ object SparseMatrixOperations {
         newResult
       }
 
-      SparseMatrix(go(A.rows, B.asColumns), MultiplicationResult)
+      SparseMatrix(go(A.rows, B.transpose), MultiplicationResult)
     }
 
     override def +++(A: SparseMatrix[Double], B: SparseMatrix[Double]): SparseMatrix[Double] = {
